@@ -23,17 +23,21 @@ class Haiku {
 	
 	public function init() {
 		$this->setLangRoute();
-		$this->setBasicData();
 	}
 	
 	public function setBasicData() {		
-		$data = $this->app->config('data');
+		$filename = $this->getFilepath("_config",$this->lang,"php");
+		if(file_exists($filename)) {
+			$data = include $filename;
+		}
+		$data['language'] = $this->lang;
 		$data['template_url'] = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));	
-		$this->data = $data;
+		return $this->data = $data;
 	}
 	
 	public function setPage($args) {
 		$page = $this->processArgs($args);
+		$data = $this->setBasicData();
 		$lang = $this->app->config("multilingual")?$this->lang:"";
 		$filename = $this->getFilepath($page,$lang);
 		if(file_exists($filename)) {
@@ -50,8 +54,9 @@ class Haiku {
 			.(empty($this->app->env['SCRIPT_NAME'])?"":$this->app->env['SCRIPT_NAME']);
 	}
 	
-	private function getFilepath($page, $lang) {
-		return BASEPATH.trim($this->app->config("data.store"),".")."/".$lang."/".$page.".html";
+	private function getFilepath($page, $lang,$ext=false) {
+		if($ext === false) $ext = $this->app->config("default.ext");
+		return BASEPATH.trim($this->app->config("data.store"),".")."/".$lang."/".$page.".".$ext;
 	}
 	
 	private function setLangRoute() {

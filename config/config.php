@@ -4,12 +4,8 @@ return [
 	"debug" => 'true',
 	"templates.path" => "./templates/skela",
 	"data.store" => "./data",
-	 
+	"default.ext" => "html",
 	"multilingual" => true,
 	"default.language" => "en",
-	"data" => [
-		"language" => 'en',
-		"title" => "Haiku",
-	],
 ];
 
