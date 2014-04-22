@@ -6,6 +6,6 @@ return [
 	"data.store" => "./data",
 	"default.ext" => "html",
 	"multilingual" => true,
-	"default.language" => "en",
+	"default.language" => "en",git
 ];
 

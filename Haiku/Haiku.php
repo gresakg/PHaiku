@@ -25,8 +25,8 @@ class Haiku {
 		$this->setLangRoute();
 	}
 	
-	public function setBasicData() {		
-		$filename = $this->getFilepath("_config",$this->lang,"php");
+	public function setBasicData($lang) {		
+		$filename = $this->getFilepath("_config",$lang,"php");
 		if(file_exists($filename)) {
 			$data = include $filename;
 		}
@@ -37,8 +37,9 @@ class Haiku {
 	
 	public function setPage($args) {
 		$page = $this->processArgs($args);
-		$data = $this->setBasicData();
 		$lang = $this->app->config("multilingual")?$this->lang:"";
+		$data = $this->setBasicData($lang); //TODO pass $lang so it works in non multilingual mode just like pages
+		
 		$filename = $this->getFilepath($page,$lang);
 		if(file_exists($filename)) {
 			$this->data['content'] = file_get_contents($filename);
