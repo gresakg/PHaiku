@@ -27,6 +27,25 @@ class Senryu extends Haiku {
 		$this->app->view->appendData(["menu"=>$menu,"baseurl"=>$baseurl]);
 		return $this->app->view->fetch("widgets/menu.php");
 	}
+	
+	public static function menuIterator($menu, $baseurl, $class=false) {
+		$html = "<ul".(($class!==false)?" class=\"$class\"":"").">";
+		if(is_array($menu)) {
+			foreach($menu as $key => $value) {
+				$html .= "<li>";
+				if(is_array($value)) {
+					$html .= "<a href=\"#\">$key</a>";
+					$html .= self::menuIterator($value, $baseurl);
+					$html .= "</li>";
+				}
+				else {
+					$html .= "<a href=\"{$baseurl}{$value}\">$key</a></li>";
+				}
+			}
+		}
+		$html .= "</ul>";
+		return $html;
+	}
 
 	
 }

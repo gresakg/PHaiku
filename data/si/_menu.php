@@ -1,8 +1,10 @@
 <?php
 return [
-	"/" => "Domov",
-	"/p/test/foo" => "Test",
-	"/p/basho" => "O Bashu"
 	
+	"Domov" => "/" ,
+	"Test" => [
+		"Foo" => "/p/test/foo"
+		],
+	"O Bashu" => "/p/basho"
 ];
 
