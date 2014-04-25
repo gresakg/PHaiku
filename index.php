@@ -1,6 +1,6 @@
 <?php
 
-$startbench = microtime(true);
+//$startbench = microtime(true);
 define("BASEPATH",__DIR__);
 
 /**
@@ -69,5 +69,5 @@ $app->get(
  * and returns the HTTP response to the HTTP client.
  */
 $app->run();
-$endbench = microtime(true);
-echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
+//$endbench = microtime(true);
+//echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";

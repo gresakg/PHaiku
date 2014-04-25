@@ -42,6 +42,6 @@
 <body>
 	<div class="container">
 		<header>
-			<h1>Haiku</h1>
+			<h1>PHaiku</h1>
 			<?php echo $widgets->menu; ?>
 		</header>
