@@ -1,8 +1,8 @@
 <?php
 return [
 	"/" => "Home",
-	"/todo" => "TODO list",
-	"/basho" => "About Basho"
+	"/p/todo" => "TODO list",
+	"/p/basho" => "About Basho"
 	
 ];
 

@@ -8,7 +8,7 @@ abstract class Haiku {
 	 * instance of Slim
 	 * @var object
 	 */
-	protected $app;
+	public $app;
 	
 	/**
 	 * current language
@@ -63,8 +63,8 @@ abstract class Haiku {
 	public function setPage($args) {
 		$page = $this->processArgs($args);
 		$lang = $this->app->config("multilingual")?$this->lang:"";
-		$data = $this->setBasicData($lang); //TODO pass $lang so it works in non multilingual mode just like pages
-		
+		$this->data = $this->setBasicData($lang); //TODO pass $lang so it works in non multilingual mode just like pages
+		$this->data['widgets'] = $this->setWidgets();
 		$filename = $this->getFilepath($page,$lang);
 		if(file_exists($filename)) {
 			$this->data['content'] = file_get_contents($filename);
@@ -91,7 +91,7 @@ abstract class Haiku {
 	 * @param string $ext extension of the requested file
  	 * @return string absolute path to the data file
 	 */
-	private function getFilepath($page, $lang,$ext=false) {
+	public function getFilepath($page, $lang,$ext=false) {
 		if($ext === false) $ext = $this->app->config("default.ext");
 		return BASEPATH.trim($this->app->config("data.store"),".")."/".$lang."/".$page.".".$ext;
 	}
@@ -157,6 +157,8 @@ abstract class Haiku {
 		else 
 			return implode("/",$args);
 	}
+	
+	public abstract function setWidgets(); 
 	
 }
 

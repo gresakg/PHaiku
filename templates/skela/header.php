@@ -17,6 +17,7 @@
 	<!-- CSS
   ================================================== -->
 	<link rel="stylesheet" href="<?php echo $template_url; ?>/css/ske18.min.css">
+	<link rel="stylesheet" href="<?php echo $template_url; ?>/css/dropdowns-skin-discrete.css">
 	<link rel="stylesheet" href="<?php echo $template_url; ?>/css/custom.css">
 	<!-- if you want to use Dropdowns menu you shold also include a dropdowns skin -->
 
@@ -42,4 +43,5 @@
 	<div class="container">
 		<header>
 			<h1>Haiku</h1>
+			<?php echo $widgets->menu; ?>
 		</header>
