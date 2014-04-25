@@ -28,7 +28,7 @@ $app = new \Slim\Slim($config);
 
 $app->env = $app->environment();
 
-$haiku = new \Haiku\Haiku($app);
+$haiku = new $config['class.name']($app);
 
 /**
  * Step 3: Define the Slim application routes

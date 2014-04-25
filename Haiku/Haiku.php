@@ -2,7 +2,7 @@
 
 namespace Haiku;
 
-class Haiku {
+abstract class Haiku {
 	
 	/**
 	 * instance of Slim
