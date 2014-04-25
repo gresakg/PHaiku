@@ -30,6 +30,7 @@ abstract class Haiku {
 	
 	public function __construct(\Slim\Slim $app) {
 		$this->app = $app;
+		$this->setLangRoute();
 		$this->init();
 		
 	}
@@ -37,9 +38,7 @@ abstract class Haiku {
 	/**
 	 * Class initialization
 	 */
-	public function init() {
-		$this->setLangRoute();
-	}
+	abstract public function init();
 	
 	/**
 	 * Fetches and sets data common to all the pages

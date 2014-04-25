@@ -7,6 +7,10 @@ class Senryu extends Haiku {
 		parent::__construct($app);
 	}
 	
+	public function init() {
+		
+	}
+	
 	public function setWidgets() {
 		$widgets = new \stdClass();
 		$widgets->menu = $this->setMenu();
@@ -14,7 +18,10 @@ class Senryu extends Haiku {
 	}
 	
 	private function setMenu() {
-		$menu = require $this->getFilepath("_menu", $this->lang, "php");
+		$filename = $this->getFilepath("_menu", $this->lang, "php");
+		if(!file_exists($filename)) return;
+		$menu = require $filename;
+		
 		$baseurl = $this->getBaseUrl()."/".$this->lang;
 		
 		$this->app->view->appendData(["menu"=>$menu,"baseurl"=>$baseurl]);
