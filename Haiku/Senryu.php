@@ -14,10 +14,11 @@ class Senryu extends Haiku {
 	public function setWidgets() {
 		$widgets = new \stdClass();
 		$widgets->menu = $this->setMenu();
+		$widgets->langmenu = $this->langMenu($this->app->config("languages"));
 		return $widgets;
 	}
 	
-	private function setMenu() {
+	protected function setMenu() {
 		$filename = $this->getFilepath("_menu", $this->lang, "php");
 		if(!file_exists($filename)) return;
 		$menu = require $filename;
@@ -26,6 +27,17 @@ class Senryu extends Haiku {
 		
 		$this->app->view->appendData(["menu"=>$menu,"baseurl"=>$baseurl]);
 		return $this->app->view->fetch("widgets/menu.php");
+	}
+	
+	protected function langMenu($languages) {
+		if(is_array($languages)) {
+			foreach($languages as $lang) $langs[$lang] = "/".$lang;
+			return self::menuIterator($langs, $this->getBaseUrl(), "lang");
+		}
+		else {
+			return false;
+		}
+		
 	}
 	
 	public static function menuIterator($menu, $baseurl, $class=false) {

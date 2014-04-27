@@ -46,7 +46,7 @@ $haiku = new $config['class.name']($app);
 
 // GET route
 $app->get(
-    $haiku->lang_route.'/',
+    $haiku->lang_route.'/', 
     function () use ($haiku) {
         $haiku->setPage(func_get_args());
     }

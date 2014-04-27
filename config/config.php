@@ -8,5 +8,6 @@ return [
 	"default.ext" => "html",
 	"multilingual" => true,
 	"default.language" => "en",
+	"languages" => ["sl","en"],
 ];
 

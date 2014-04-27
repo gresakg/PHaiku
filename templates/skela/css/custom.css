@@ -15,6 +15,15 @@
 	margin: 1em auto;
 }
 
+.lang li {
+	float:right;
+	padding: 0 1em;
+}
+
+ul.lang {
+	text-align: right;
+}
+
 blockquote {
 	float: right;
 }

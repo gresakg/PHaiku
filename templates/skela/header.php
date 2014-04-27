@@ -42,6 +42,9 @@
 <body>
 	<div class="container">
 		<header>
-			<h1>PHaiku</h1>
+			<div class="row">
+				<div class="nine columns"><h1>PHaiku</h1></div>
+				<div class="nine columns"><?php echo $widgets->langmenu; ?></div>
+			</div>
 			<?php echo $widgets->menu; ?>
 		</header>
