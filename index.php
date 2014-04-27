@@ -60,6 +60,14 @@ $app->get(
     }
 );
 
+$routes = $app->config("routes");
+
+foreach($routes as $route) {
+	$app->map( $haiku->lang_route.$route['route'], function() use ($haiku, $route) {
+		$haiku->$route['handler'](func_get_args());
+	})->via(strtoupper($route['method']));
+}
+
 
 
 /**

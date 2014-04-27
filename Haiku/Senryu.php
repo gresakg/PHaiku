@@ -11,6 +11,10 @@ class Senryu extends Haiku {
 		
 	}
 	
+	public function contactForm() {
+		echo "contact form";
+	}
+	
 	public function setWidgets() {
 		$widgets = new \stdClass();
 		$widgets->menu = $this->setMenu();
