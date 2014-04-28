@@ -30,6 +30,7 @@ return [
 			"handler" => "contactForm",
 		],
 	],
+	// define default route conditions
 	"route.conditions" => [
 		'page+' => '[a-zA-Z0-9_-]+',
 		'lang' => '[\w]{2}',

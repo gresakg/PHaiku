@@ -24,6 +24,7 @@ class Haiku extends PHaiku {
 		$widgets = new \stdClass();
 		$widgets->menu = $this->setMenu();
 		$widgets->langmenu = $this->langMenu($this->app->config("languages"));
+		$widgets->haiku = $this->haikuWidget();
 		return $widgets;
 	}
 	
@@ -33,6 +34,15 @@ class Haiku extends PHaiku {
 	public function contactForm() {
 	
 		echo "contact form";
+	}
+	
+	public function haikuWidget() {
+		$filename = $this->getFilepath("_haikus",$this->lang,"php");
+		if(file_exists($filename)) {
+			$haikus = include $filename;
+		}
+		return "<blockquote>".nl2br($haikus[array_rand($haikus)])."</blockquote>";
+		
 	}
 
 	
