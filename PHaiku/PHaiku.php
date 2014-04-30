@@ -106,7 +106,7 @@ abstract class PHaiku {
 	 * @return html string containing a language menu or false
 	 */
 	protected function langMenu(array $languages) {
-		if(is_array($languages)) {
+		if(is_array($languages) && $this->app->config('multilingual')) {
 			foreach($languages as $lang) $langs[$lang] = "/".$lang;
 			return self::menuIterator($langs, $this->getBaseUrl(), "lang");
 		}
@@ -120,10 +120,14 @@ abstract class PHaiku {
 	 * @return html string containing menu
 	 */
 	protected function setMenu() {
-		$filename = $this->getFilepath("_menu", $this->lang, "php");
+		if($this->app->config('multilingual'))
+			$lang = $this->lang;
+		else
+			$lang="";
+		$filename = $this->getFilepath("_menu", $lang, "php");
 		if(!file_exists($filename)) return;
 		$menudata = require $filename;		
-		$baseurl = $this->getBaseUrl()."/".$this->lang;
+		$baseurl = $this->getBaseUrl().(empty($lang)?"":"/".$lang);
 		$menu = self::menuIterator($menudata, $baseurl, "nav");
 		$this->app->view->appendData(["menu"=>$menu]);
 		return $this->app->view->fetch("widgets/menu.php");

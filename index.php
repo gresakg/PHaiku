@@ -1,5 +1,5 @@
 <?php
-$startbench = microtime(true);
+//$startbench = microtime(true);
 
 require __DIR__.'/Slim/Slim.php';
 
@@ -33,5 +33,5 @@ $di['haiku'] = function($c) {
 
 
 $di['slim']->run();
-$endbench = microtime(true);
-echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
+//$endbench = microtime(true);
+//echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";

@@ -6,7 +6,7 @@ return [
 	"class.name" => "\PHaiku\Haiku",
 	"data.store" => "./data",
 	"default.ext" => "html",
-	"multilingual" => true,
+	"multilingual" => false,
 	"default.language" => "en",
 	"languages" => ["sl","en"],
 	//define your custom routes

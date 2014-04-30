@@ -1,7 +1,11 @@
 <?php  include("header.php"); ?>
-<div class="content">
-	<?php echo $content;  ?>
+<div class="row">
+	<div class="content fourteen columns">
+		<?php echo $content;  ?>
+	</div>
+	<aside class="four columns">
+		<?php include 'aside.php';?>
+	</aside>
 </div>
-<?php include 'aside.php';?>
 <?php include("footer.php"); ?>
 	
