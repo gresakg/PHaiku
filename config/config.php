@@ -6,10 +6,10 @@ return [
 	"class.name" => "\PHaiku\Haiku",
 	"data.store" => "./data",
 	"default.ext" => "html",
-	"multilingual" => false,
+	"multilingual" => true,
 	"default.language" => "en",
 	"languages" => ["sl","en"],
-	//define your custom routes
+	//define basic routes
 	"routes" => [
 		[
 			"name" => "index",
@@ -23,6 +23,7 @@ return [
 			"method" => "get",
 			"handler" => "setPage",
 		],	
+	//custom routes
 		[
 			"name" => "contact",
 			"route" => "/contact",

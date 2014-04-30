@@ -23,6 +23,8 @@ $di['haiku'] = function($c) {
 	return new $c['config']['class.name']($c);
 };
 
+include __DIR__.'/config/services.php';
+
 // end services definition
 
 \Slim\Route::setDefaultConditions($di['config']['route.conditions']);

@@ -12,8 +12,9 @@ class Haiku extends PHaiku {
 	/**
 	 * This is the implementation of the init abstract method. You can use it to
 	 * add your own initialisations.
+	 * @param object \Pimple\Pimple $di Description
 	 */
-	public function init() {
+	public function init(\Pimple\Pimple $di) {
 		
 	}
 	

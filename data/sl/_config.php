@@ -1,6 +1,6 @@
 <?php
  
 return [
-	"title" => "Haiku",
+	"title" => "PHaiku",
 ];
 

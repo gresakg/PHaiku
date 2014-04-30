@@ -25,6 +25,8 @@
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<script src="<?php echo $template_url; ?>/js/jquery-1.10.2.min.js"></script>
+	<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+	
 	<!-- Favicons
 	================================================== -->
 	<link rel="shortcut icon" href="<?php echo $template_url; ?>/img/favicon.ico">
@@ -43,7 +45,7 @@
 	<div class="container">
 		<header>
 			<div class="row">
-				<div class="nine columns"><h1>PHaiku</h1></div>
+				<div class="nine columns"><h1><?php echo $title; ?></h1></div>
 				<div class="nine columns"><?php echo $widgets->langmenu; ?></div>
 			</div>
 			<?php echo $widgets->menu; ?>

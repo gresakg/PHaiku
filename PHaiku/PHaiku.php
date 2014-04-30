@@ -14,7 +14,7 @@ abstract class PHaiku {
 	 * Instance of Slim
 	 * @var object
 	 */
-	public $app;
+	protected $app;
 	
 	/**
 	 * Current language
@@ -26,7 +26,7 @@ abstract class PHaiku {
 	 * Route prefix for language
 	 * @var string /:lang or empty
 	 */
-	public $lang_route = "";
+	private $lang_route = "";
 	
 	/**
 	 * Storage of variables that will be accessible in the template as keys
@@ -39,14 +39,14 @@ abstract class PHaiku {
 		$this->env = $di['env'];
 		$this->conf = $di['config'];
 		$this->setLangRoute();
-		$this->init();
+		$this->init($di);
 		
 	}
 	
 	/**
 	 * Add additional initializations here
 	 */
-	abstract public function init();
+	abstract public function init(\Pimple\Pimple $di);
 	
 	/**
 	 * Setup your widgets
@@ -72,7 +72,7 @@ abstract class PHaiku {
 	 * @param string $lang current language
 	 * @return array the set data are also returned
 	 */
-	public function setBasicData($lang) {		
+	protected function setBasicData($lang) {		
 		$filename = $this->getFilepath("_config",$lang,"php");
 		if(file_exists($filename)) {
 			$data = include $filename;
@@ -257,7 +257,7 @@ abstract class PHaiku {
 	 * @param array $args
 	 * @return string uri of the requested page
 	 */
-	private function processArgs($args) {
+	protected function processArgs($args) {
 		if($this->app->config("multilingual")) {
 			$this->lang = array_shift($args);	
 			if($this->lang != $this->app->getCookie("haikulang")) {

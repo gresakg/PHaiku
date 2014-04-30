@@ -1,0 +1,104 @@
+<div>
+	<h2>Extending PHaiku</h2>
+	<p>
+		PHaiku is essentialy one abstract class that is meant to be extended. By default 
+		it's extended by the Haiku class, but you can extend it by any of your own classes.
+		To make sure, the right class gets called in the bootstrap process, you define
+		it in the <code>./config/config.php</code> file:
+	</p>
+	<pre class='prettyprint linenums'>
+"class.name" => "\PHaiku\MyHaiku",
+	</pre>
+	<p>
+		You may alter functionality, add file parsers (markdown support) and be quite creative.
+		Don't forget the <code>$this->app</code> variable contains an instance of 
+		<a href="http://www.slimframework.com/">Slim framework</a>, so don't forget
+		to consult their <a href="http://docs.slimframework.com/">documentation</a> too.
+	</p>
+	<h3>Adding controllers</h3>
+	<p>
+		The most interesting way to extend PHaiku is to add new controllers. Haiku implements
+		only one controller method <code>PHaiku::setPage()</code>. You can use your
+		imagination or follow your needs to add controllers. One idea is for example
+		a contact form.
+	</p>
+	<p>
+		To add a controller you must create a new method
+	</p>
+	<pre class="prettyprint linenums">
+public function myController($params);
+	</pre>
+	<p>
+		Then add a route for the new controller in the <code>./config/config.php</code>	file
+	</p>
+	<pre class="prettyprint linenums">
+//define basic routes
+"routes" => [
+	[
+		"name" => "index",
+		"route" => "/",
+		"method" => "get",
+		"handler" => "setPage",
+	],
+	[
+		"name" => "page",
+		"route" => "/p/:page+",
+		"method" => "get",
+		"handler" => "setPage",
+	],	
+//custom routes
+	[
+		"name" => "contact",
+		"route" => "/contact",
+		"method" => "get",
+		"handler" => "contactForm",
+	],
+//routes for myController
+	[
+		"name" => "mycontroller",
+		"route" => "/my/:params+",
+		"method" => "get",
+		"handler" => "myController",
+	],
+],
+// define default route conditions
+"route.conditions" => [
+	'page+' => '[a-zA-Z0-9_-]+',
+	'lang' => '[\w]{2}',
+//define default route conditions for params used in mycontroller
+	'params+' => '[\d]+'
+],
+	</pre>
+	<h3>Adding dependencies</h3>
+	<p>
+		Sooner or later, you will need some libraries to assist you in your creativity.
+		PHaiku uses <a href='http://pimple.sensiolabs.org/'>Pimple</a> as dependency
+		injection container.
+	</p>
+	<p>
+		Add your custom services to the <code>$di</code> variable in the <code>./config/services.php</code>
+		file.</p>
+	<pre class='prettyprint linenums'>
+$di['myservice'] = function($c) {
+	return new ...
+}
+	</pre>
+	<p>
+		For your service to be available, put it in a global variable in the <code>MyClass::init()</code>
+		method.
+	</p>
+	<pre class='prettyprint linenums'>
+/**
+* This is the implementation of the init abstract method. You can use it to
+* add your own initialisations.
+* @param object \Pimple\Pimple $di Description
+*/
+public function init(\Pimple\Pimple $di) {
+	$this->myservice = $di['myservice'];
+}
+	</pre>
+	<p>
+		That's probably all you need to know to extend PHaiku. You can also check 
+		the <a href='reference'>reference</a> for details.
+	</p>
+</div>

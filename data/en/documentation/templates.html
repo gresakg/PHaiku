@@ -1,0 +1,90 @@
+<div>
+<h2>Templates</h2>
+<p>
+	To desambiguate I will call <strong>theme</strong> a template as a whole directory of files and
+	<strong>template</strong> a separate php file that is used to render content.
+</p>
+<p>
+	The themes are located in the <code>./templates</code> directory. The default 
+	theme is Skela and it's based on the <a href="https://github.com/gresakg/Skela">Skela</a> 
+	1080px grid system.
+</p>
+<p>
+	You can use and modify Skela which tends to be as agnostic as possible, so that 
+	it's easy to modify it with your own styles.
+</p>
+<p>
+	However, it's also easy to implement any of the html templates you can	grab 
+	on the web, or create your own.
+</p>
+<h3>Basic concepts</h3>
+<p>
+	Templates are php files. For basic usage you need at least index.php. This file
+	can include other files (like header.php, footer.php and aside.php ...). To include
+	dynamic content, you simply echo variables that are defined in the code or include
+	other files. 
+</p>
+<pre class="prettyprint linenums">
+&lt;?php  include("header.php"); ?&gt;
+&lt;div class="row"&gt;
+	&lt;div class="content fourteen columns"&gt;
+		&lt;?php echo $content;  ?&gt;
+	&lt;/div&gt;
+	&lt;aside class="four columns"&gt;
+		&lt;?php include 'aside.php';?&gt;
+	&lt;/aside&gt;
+&lt;/div&gt;
+&lt;?php include("footer.php"); ?&gt;
+</pre>
+<h3>Variables</h3>
+<p>Here's a list of variables you can use in templates, that are predefined by Phaiku:</p>
+<ul>
+	<li><strong>$language</strong> - contains the two letter language code of the 
+		current language. You need this mainly to set the language in the header section.
+		It's defined by the <code>PHaiku::setBasicData()</code> method.
+	</li>
+	<li><strong>$title</strong> - contains whatever you set in the <code>_config.php</code>
+		file, used for setting the content of the <code>&lt;title&gt;</code> tag. You can
+	use it also to set the main heading of the site or anywhere else.</li>
+	<li><strong>$template_url</strong> - contains the url of the current template.
+		It's extremely usefull for setting the correct urls for css, javascript and image
+		inclusions. Example:
+		<pre class='prettyprint lang-php'>&lt;link rel="stylesheet" href="&lt;?php echo $template_url; ?&gt;/css/custom.css"&gt;</pre>
+		It's defined by the <code>PHaiku::setBasicData()</code> method.
+	</li>
+	<li><strong>$content</strong> - holds the main content of the current page (whatever 
+		content you create in your .html files). It's defined by the <code>PHaiku::setPage()</code> 
+		method.
+	</li>
+	<li><strong>$widgets</strong> - this variable contains an object of type <code>stdClass</code>
+		containing all the widgets by the names you give them. Predefined widgets are <code>$widgets->menu</code>
+		containing the main menu, and <code>$widgets->langmenu</code> for multilingual sites
+		containing the language menu. Example usage:
+		<pre class="prettyprint linenums">
+&lt;header&gt;
+	&lt;div class="row"&gt;
+		&lt;div class="nine columns"&gt;&lt;h1&gt;&lt;?php echo $title; ?&gt;&lt;/h1&gt;&lt;/div&gt;
+		&lt;div class="nine columns"&gt;&lt;?php echo $widgets->langmenu; ?&gt;&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;?php echo $widgets->menu; ?&gt;
+&lt;/header&gt;
+		</pre>
+	</li>
+</ul>
+<h3>Define custom variables</h3>
+<p>You can define as many custom variables as you want in the <code>_config.php</code> file(s).
+This is usefull to define things like footers, site slogans and in the case of multilingual
+sites, it's the place to define common language strings, since there's a _config.php 
+file present in every language folder for the language in question. Example _config.php file
+contents:
+</p>
+<pre class="prettyprint linenums">
+return [
+	"title" => "PHaiku",
+	"slogan" => "brief and efficient",
+	"copyright" => "(c) 2014 gresak.net",
+	"more" => "More to comme ..."
+];
+</pre>
+<p>That's all there is to templates.</p>
+</div>
