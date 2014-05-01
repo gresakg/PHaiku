@@ -39,7 +39,6 @@
 	<meta name="application-name" content=""/>
 	<meta name="msapplication-TileColor" content=""/>
 	<meta name="msapplication-TileImage" content="<?php echo $template_url; ?>/img/winows-8-start-screen-icon.png"/>
-
 </head>
 <body>
 	<div class="container">

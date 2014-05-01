@@ -77,6 +77,7 @@ abstract class PHaiku {
 		if(file_exists($filename)) {
 			$data = include $filename;
 		}
+		$data['baseurl'] = $this->getBaseUrl();
 		$data['language'] = $this->lang;
 		$data['template_url'] = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));	
 		return $this->data = $data;
