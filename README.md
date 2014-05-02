@@ -15,9 +15,15 @@ poetry form of Japanese origin, consisting of only five verses with respectively
 To install PHaiku, use git to clone it to your public folder, edit configuration file to your needs, and your done.
 
 ```
+
 git clone https://github.com/gresakg/PHaiku.git myproject
+
 ```		
 Alternatively, you can download the zip package and unzip it to your public folder.
+
+## Demo and support
+
+See the demo, support and documentation at phaiku.gresak.net
 
 ## License
 
