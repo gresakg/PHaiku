@@ -23,7 +23,7 @@ Alternatively, you can download the zip package and unzip it to your public fold
 
 ## Demo and support
 
-See the demo, support and documentation at phaiku.gresak.net
+See the demo, support and documentation at [phaiku.gresak.net](http://phaiku.gresak.net)
 
 ## License
 
