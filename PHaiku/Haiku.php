@@ -28,8 +28,10 @@ class Haiku extends PHaiku {
 		$widgets->menu = $this->setMenu();
 		$widgets->langmenu = $this->langMenu($this->app->config("languages"));
 		$widgets->haiku = $this->haikuWidget();
-		$widgets->twitter = $this->twitterWidget();
-		$widgets->discuss = $this->discussWidget();
+		$widgets->twitter = $this->textWidget("twitter");
+		$widgets->discuss = $this->textWidget("discuss");
+		$widgets->analytics = $this->textWidget("analytics");
+		$widgets->forkme = $this->textWidget("forkme");
 		return $widgets;
 	}
 	
@@ -54,20 +56,14 @@ class Haiku extends PHaiku {
 		
 	}
 	
-	public function twitterWidget() {
-		return '<a class="twitter-timeline" data-dnt="true" href="https://twitter.com/gresakg" data-widget-id="461454369859174400">Tweets by @gresakg</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
-	}
-	
-	public function discussWidget() {
-		$filename = $this->getFilepath("_discuss",$this->lang,"php");
+	public function textWidget($name) {
+		$filename = $this->getFilepath("_".$name, $this->lang, "php");
 		if(file_exists($filename)) {
 			return file_get_contents($filename);
 		}
 		else {
 			return "";
 		}
-		
 	}
 
 	
