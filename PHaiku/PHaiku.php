@@ -11,6 +11,12 @@ abstract class PHaiku {
 	public static $basedir;
 	
 	/**
+	 * Phaiku version.
+	 * @var string 
+	 */
+	public static $version;
+	
+	/**
 	 * Instance of Slim
 	 * @var object
 	 */
@@ -106,6 +112,7 @@ abstract class PHaiku {
 		$data['baseurl'] = $this->getBaseUrl();
 		$data['language'] = empty($this->lang)?$this->app->config("default.lang"):$this->lang;
 		$data['template_url'] = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));
+		$data['phaiku_version'] = self::$version;
 		$this->data = array_merge($this->data, $data);
 	}
 	
