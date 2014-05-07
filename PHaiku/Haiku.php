@@ -39,11 +39,21 @@ class Haiku extends PHaiku {
 		
 	}
 	
+	public function removeWidget($name) {
+		if(isset($widget->$name)) {
+			$widgets->$name = false;
+		} 
+		else {
+			return;
+		}
+	}
+	
 	/**
 	 * Just an example of a custom controller method, called if you access [lang]/contact
 	 */	
 	public function contactForm(array $args) {
 		$uri = $this->processArgs($args);
+		$this->removeWidget("discuss");
 		if(!empty($uri)) {
 			$formdata = $this->processForm();
 		}
