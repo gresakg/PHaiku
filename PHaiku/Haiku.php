@@ -34,16 +34,6 @@ class Haiku extends PHaiku {
 		
 	}
 	
-	public function textWidget($name) {
-		$filename = $this->getFilepath("_".$name, "php");
-		if(file_exists($filename)) {
-			return file_get_contents($filename);
-		}
-		else {
-			return "";
-		}
-	}
-	
 	protected function processForm() {
 		//redirects on success
 		//return errors and data on fail

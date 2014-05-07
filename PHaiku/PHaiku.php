@@ -150,13 +150,21 @@ abstract class PHaiku {
 		else {
 			$page = implode("/", $args[0]);
 		}
-		$filename = $this->getFilepath($page);
-		if(file_exists($filename)) {
-			$this->data['content'] = file_get_contents($filename);
-		} else {
+		$page = "pages/".$page;
+		$this->data['content'] = $this->textWidget($page);
+		if(empty($this->data['content']))
 			$this->app->pass();
-		}
 		$this->app->render("index.php", $this->data);
+	}
+	
+	public function textWidget($name) {
+		$filename = $this->getFilepath($name);
+		if(file_exists($filename)) {
+			return file_get_contents($filename);
+		}
+		else {
+			return "";
+		}
 	}
 	
 	/**
