@@ -42,9 +42,20 @@ class Haiku extends PHaiku {
 	/**
 	 * Just an example of a custom controller method, called if you access [lang]/contact
 	 */	
-	public function contactForm() {
-	
-		echo "contact form";
+	public function contactForm(array $args) {
+		$uri = $this->processArgs($args);
+		if(!empty($uri)) {
+			$formdata = $this->processForm();
+		}
+		$filename = $this->getFilepath("_form",$this->lang,"php");
+		if(file_exists($filename)) {
+			$form = include $filename;
+		}
+		$form['action'] = $this->app->urlFor("postcontact",array("lang"=>$this->lang, "token"=>"xxx")); //TODO set token
+		$this->app->view->appendData($form);
+		$this->data['content'] = $this->app->view->fetch("contactform.php");
+		$this->app->render("index.php", $this->data);
+		
 	}
 	
 	public function haikuWidget() {
@@ -64,6 +75,12 @@ class Haiku extends PHaiku {
 		else {
 			return "";
 		}
+	}
+	
+	protected function processForm() {
+		//redirects on success
+		//return errors and data on fail
+		echo $this->app->request->post("name");
 	}
 
 	

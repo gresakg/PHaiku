@@ -89,9 +89,8 @@ abstract class PHaiku {
 	 */
 	public function setPage(array $args) {
 		$page = $this->processArgs($args);
-		$lang = $this->app->config("multilingual")?$this->lang:"";
-		$this->data = $this->setBasicData($lang); 
-		$this->data['widgets'] = $this->setWidgets();
+		if(empty($page)) $page = "index";
+		$lang = $this->app->config("multilingual")?$this->lang:""; 
 		$filename = $this->getFilepath($page,$lang);
 		if(file_exists($filename)) {
 			$this->data['content'] = file_get_contents($filename);
@@ -264,17 +263,23 @@ abstract class PHaiku {
 			if($this->lang != $this->app->getCookie("haikulang")) {
 				$this->app->setCookie("haikulang", $this->lang);
 			}
+			$this->data = $this->setBasicData($this->lang);
 		}
 		else {
+			$this->data = $this->setBasicData("");
 			$this->lang = $this->app->config("default.language");
 		}
+		
+		$this->data['widgets'] = $this->setWidgets();
 		
 		$args = empty($args)?false:$args[0];
 		
 		if(empty($args)) 
-			return "index";
-		else 
+			return;
+		elseif (is_array($args)) 
 			return implode("/",$args);
+		else
+			return $args;
 	}
 	
 }
