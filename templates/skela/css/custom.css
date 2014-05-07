@@ -71,6 +71,14 @@ border-radius: 4px;
 	margin-bottom: 0;
 }
 
+.contactform input[type=text] {
+	width:98%;	
+}
+
+.contactform textarea{
+	width:99%;
+}
+
 /* #Page Styles
 ================================================== */
 

@@ -30,6 +30,12 @@ return [
 			"method" => "get",
 			"handler" => "contactForm",
 		],
+		[
+			"name" => "postcontact",
+			"route" => "/contact/:token",
+			"method" => "post",
+			"handler" => "contactForm",
+		],
 	],
 	// define default route conditions
 	"route.conditions" => [
