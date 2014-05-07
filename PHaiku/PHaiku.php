@@ -32,27 +32,15 @@ abstract class PHaiku {
 	 * Storage of variables that will be accessible in the template as keys
 	 * @var array
 	 */
-	public $data;
+	protected $data = [];
 	
 	public function __construct(\Pimple\Pimple $di) {
 		$this->app = $di['slim'];
 		$this->env = $di['env'];
 		$this->conf = $di['config'];
 		$this->setLangRoute();
-		$this->init($di);
 		
 	}
-	
-	/**
-	 * Add additional initializations here
-	 */
-	abstract public function init(\Pimple\Pimple $di);
-	
-	/**
-	 * Setup your widgets
-	 * @return object of type \StdClass for use in templates
-	 */
-	public abstract function setWidgets();
 	
 	/**
 	 * Setup routing. Define your routes in config/config.php
@@ -62,9 +50,47 @@ abstract class PHaiku {
 		$routes = $di['config']["routes"];
 		foreach($routes as $route) {
 			$di['slim']->map( $di['haiku']->lang_route.$route['route'], function() use ($di, $route) {
-				$di['haiku']->$route['handler'](func_get_args());
+				$args = $di['haiku']->init(func_get_args());
+				$di['haiku']->$route['handler']($args);
 			})->via(strtoupper($route['method']))->name($route['name']);
 		}
+	}
+	
+	/**
+	 * Initialies the environement after the route is known
+	 *  @param array $args an array of route arguments
+	 * @return array $args arguments
+	 */
+	private function init($args) {
+		$args = $this->processArgs($args);
+		$this->setBasicData($this->lang);
+		$this->setWidgets();
+		
+		return $args;
+	}
+		
+	/**
+	 * This method processes arguments passed by the route and does all the initializations
+	 * that are common to all the routes.
+	 * @param array $args an array of route arguments, eventually multidimensional.
+	 * @return array $args arguments
+	 */
+	private function processArgs($args) {
+		/**
+		 * In a multilingual environement, the first argument passed is allways a language.
+		 * Language set by url allways have precedence, that's why we never call getLang()
+		 */
+		if($this->app->config("multilingual")) {
+			$this->lang = array_shift($args);	
+			if($this->lang != $this->app->getCookie("haikulang")) {
+				$this->app->setCookie("haikulang", $this->lang);
+			}
+		}
+		else {
+			$this->lang = "";
+		}
+		
+		return $args;
 	}
 	
 	/**
@@ -72,15 +98,38 @@ abstract class PHaiku {
 	 * @param string $lang current language
 	 * @return array the set data are also returned
 	 */
-	protected function setBasicData($lang) {		
-		$filename = $this->getFilepath("_config",$lang,"php");
+	protected function setBasicData() {		
+		$filename = $this->getFilepath("_config","php");
 		if(file_exists($filename)) {
 			$data = include $filename;
 		}
 		$data['baseurl'] = $this->getBaseUrl();
-		$data['language'] = $this->lang;
-		$data['template_url'] = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));	
-		return $this->data = $data;
+		$data['language'] = empty($this->lang)?$this->app->config("default.lang"):$this->lang;
+		$data['template_url'] = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));
+		$this->data = array_merge($this->data, $data);
+	}
+	
+	/**
+	 * Setup your widgets
+	 * @return object of type \StdClass for use in templates
+	 */
+	protected function setWidgets() {
+		$this->data["widgets"] = new \stdClass();
+		$widgets = $this->app->config("widgets");
+		foreach($widgets as $name => $params) {
+			$this->addWidget($name,$params);
+		}
+	}
+	
+	public function addWidget($name,$params) {	
+		if(!is_array($params['arguments'])) {
+			$params['arguments'] = explode(",",$params['arguments']);
+		}
+		$this->data["widgets"]->$name = call_user_func_array(array($this,$params['handler']), $params['arguments']);
+	}
+	
+	public function removeWidget($name) {
+		$this->data['widgets']->$name = "";
 	}
 	
 	/**
@@ -88,10 +137,13 @@ abstract class PHaiku {
 	 * @param array $args
 	 */
 	public function setPage(array $args) {
-		$page = $this->processArgs($args);
-		if(empty($page)) $page = "index";
-		$lang = $this->app->config("multilingual")?$this->lang:""; 
-		$filename = $this->getFilepath($page,$lang);
+		if(empty($args)) { 
+			$page = "index";
+		}
+		else {
+			$page = implode("/", $args[0]);
+		}
+		$filename = $this->getFilepath($page);
 		if(file_exists($filename)) {
 			$this->data['content'] = file_get_contents($filename);
 		} else {
@@ -101,11 +153,25 @@ abstract class PHaiku {
 	}
 	
 	/**
+	 * PHaiku's wrapper for slims urlFor function that takes into account the lang 
+	 * arguments
+	 * @param type $routename
+	 * @param array $args
+	 */
+	public function setUrl($routename, array $args) {
+		if($this->app->config("multilingual")) {
+			$args = array_merge(["lang"=>$this->lang],$args);
+		}
+		return $this->app->urlFor($routename,$args);
+		
+	}
+	
+	/**
 	 * The language menu
-	 * @param array $languages available languages
 	 * @return html string containing a language menu or false
 	 */
-	protected function langMenu(array $languages) {
+	protected function langMenu() {
+		$languages = $this->app->config("languages");
 		if(is_array($languages) && $this->app->config('multilingual')) {
 			foreach($languages as $lang) $langs[$lang] = "/".$lang;
 			return self::menuIterator($langs, $this->getBaseUrl(), "lang");
@@ -120,14 +186,10 @@ abstract class PHaiku {
 	 * @return html string containing menu
 	 */
 	protected function setMenu() {
-		if($this->app->config('multilingual'))
-			$lang = $this->lang;
-		else
-			$lang="";
-		$filename = $this->getFilepath("_menu", $lang, "php");
+		$filename = $this->getFilepath("_menu", "php");
 		if(!file_exists($filename)) return;
 		$menudata = require $filename;		
-		$baseurl = $this->getBaseUrl().(empty($lang)?"":"/".$lang);
+		$baseurl = $this->getBaseUrl().(empty($this->lang)?"":"/".$this->lang);
 		$menu = self::menuIterator($menudata, $baseurl, "nav");
 		$this->app->view->appendData(["menu"=>$menu]);
 		return $this->app->view->fetch("widgets/menu.php");
@@ -176,9 +238,9 @@ abstract class PHaiku {
 	 * @param string $ext extension of the requested file
  	 * @return string absolute path to the data file
 	 */
-	public function getFilepath($page, $lang,$ext=false) {
+	public function getFilepath($page, $ext=false) {
 		if($ext === false) $ext = $this->app->config("default.ext");
-		return self::$basedir.trim($this->app->config("data.store"),".")."/".$lang."/".$page.".".$ext;
+		return self::$basedir.trim($this->app->config("data.store"),".")."/".$this->lang."/".$page.".".$ext;
 	}
 	
 	/**
@@ -187,9 +249,10 @@ abstract class PHaiku {
 	private function setLangRoute() {
 		if($this->app->config('multilingual')) {
 			$this->lang_route = "/:lang";
+			$this->getLang();
 			$self = $this;
 			$this->app->get("/", function() use ($self) {
-				$self->app->redirect($self->getLang());
+				$self->app->redirect($self->lang);
 			});
 		}
 		else {
@@ -199,6 +262,7 @@ abstract class PHaiku {
 	
 	/**
 	 * Sets the language and returns the language and the language cookie
+	 * We only need this to define language for base route on multilingual system
 	 * @return string language code
 	 */
 	private function getLang() {
@@ -248,38 +312,6 @@ abstract class PHaiku {
 		    }
 		}		
 		return $deflang;
-	}
-	
-	/**
-	 * Processes arguments for the page route
-	 * Sets the language in case of multilingual url and gets the uri for the requested
-	 * page
-	 * @param array $args
-	 * @return string uri of the requested page
-	 */
-	protected function processArgs($args) {
-		if($this->app->config("multilingual")) {
-			$this->lang = array_shift($args);	
-			if($this->lang != $this->app->getCookie("haikulang")) {
-				$this->app->setCookie("haikulang", $this->lang);
-			}
-			$this->data = $this->setBasicData($this->lang);
-		}
-		else {
-			$this->data = $this->setBasicData("");
-			$this->lang = $this->app->config("default.language");
-		}
-		
-		$this->data['widgets'] = $this->setWidgets();
-		
-		$args = empty($args)?false:$args[0];
-		
-		if(empty($args)) 
-			return;
-		elseif (is_array($args)) 
-			return implode("/",$args);
-		else
-			return $args;
 	}
 	
 }
