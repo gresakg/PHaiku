@@ -9,6 +9,37 @@ return [
 	"multilingual" => true,
 	"default.language" => "en",
 	"languages" => ["sl","en"],
+	//setup default widgets
+	"widgets" => [
+		"menu" => [
+			"handler"=>"setMenu",
+			"arguments" => NULL
+		],
+		"langmenu" => [
+			"handler"=>"langMenu",
+			"arguments" => NULL
+		],
+		"haiku" => [
+			"handler"=>"haikuWidget",
+			"arguments" => NULL
+		],
+		"twitter" => [
+			"handler"=>"textWidget",
+			"arguments" => "twitter"
+		],
+		"discuss" => [
+			"handler"=>"textWidget",
+			"arguments" => ["discuss"]
+		],
+		"analytics" => [
+			"handler"=>"textWidget",
+			"arguments" => "analytics"
+		],
+		"forkme" => [
+			"handler"=>"textWidget",
+			"arguments" => "forkme"
+		],
+	],
 	//define basic routes
 	"routes" => [
 		[
