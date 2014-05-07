@@ -25,6 +25,49 @@ class Haiku extends PHaiku {
 		
 	}
 	
+	public function theNews() {
+		 $this->data['content'] = $this->newsWidget();
+		 $this->app->render("index.php", $this->data);
+		
+	}
+	
+	public function newsItem(array $args) {
+		$args = $args[0];
+		$filename = $this->getFilepath("news/".implode("_",$args),"php");
+		if(file_exists($filename)) {
+			$news = include $filename;
+		}
+		$news['content'] = nl2br($news['content']);
+		$news['date'] = $this->getNewsDate($args);
+		$this->app->view->appendData($news);
+		$this->data['content'] = $this->app->view->fetch("newsitem.php");
+		$this->app->render("index.php", $this->data);
+		
+	}
+	
+	public function newsWidget() {
+		$d = dir(trim($this->getFilepath("news", ""),"."));
+		$content = "";
+		while (false !== ($file = $d->read())) {
+			$file = trim($file,".php");
+			$meta = explode("_", $file);
+			if(count($meta)<3)	continue;
+			$filename = $this->getFilepath("news/".$file,"php");
+			if(file_exists($filename)) {
+				$news = include $filename;
+			} else continue;
+			$news['content'] = nl2br($news['content']);
+			$news['date'] = $this->getNewsDate($meta);
+			$url = implode("/", array_shift(array_chunk($meta, 3)))."/".implode("_",array_splice($meta,3));
+			$news['link'] = $this->setUrl("newsitem", ["segments"=>$url]);
+			
+			$this->app->view->appendData($news);
+			$content .= $this->app->view->fetch("widgets/news.php");
+		 }
+		 $d->close();
+		 return $content;
+	}
+	
 	public function haikuWidget() {
 		$filename = $this->getFilepath("_haikus","php");
 		if(file_exists($filename)) {
@@ -32,6 +75,11 @@ class Haiku extends PHaiku {
 		}
 		return "<blockquote>".nl2br($haikus[array_rand($haikus)])."</blockquote>";
 		
+	}
+	
+	protected function getNewsDate(array $meta) {
+		$time = mktime(0,0,0,(int) $meta[1], (int) $meta[2], (int) $meta[0]);
+		return date("d. m. Y",$time);
 	}
 	
 	protected function processForm() {

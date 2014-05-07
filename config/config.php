@@ -56,6 +56,18 @@ return [
 		],	
 	//custom routes
 		[
+			"name" => "news",
+			"route" => "/news",
+			"method" => "get",
+			"handler" => "theNews",
+		],
+		[
+			"name" => "newsitem",
+			"route" => "/n/:segments+",
+			"method" => "get",
+			"handler" => "newsItem",
+		],
+		[
 			"name" => "contact",
 			"route" => "/contact",
 			"method" => "get",
