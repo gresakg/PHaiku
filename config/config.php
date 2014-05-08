@@ -39,6 +39,10 @@ return [
 			"handler"=>"textWidget",
 			"arguments" => "forkme"
 		],
+		"news" => [
+			"handler"=>"newsWidget",
+			"arguments"=>NULL
+		],
 	],
 	//define basic routes
 	"routes" => [
@@ -46,7 +50,7 @@ return [
 			"name" => "index",
 			"route" => "/",
 			"method" => "get",
-			"handler" => "setPage",
+			"handler" => "frontPage",
 		],
 		[
 			"name" => "page",

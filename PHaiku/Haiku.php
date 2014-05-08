@@ -9,23 +9,18 @@ class Haiku extends PHaiku {
 		parent::__construct($app);
 	}
 	
-	/**
-	 * Just an example of a custom controller method, called if you access [lang]/contact
-	 */	
-	public function contactForm($args) {
+	public function frontPage() {
 		$this->removeWidget("discuss");
-		$filename = $this->getFilepath("_form","php");
-		if(file_exists($filename)) {
-			$form = include $filename;
-		}
-		$form['action'] = $this->setUrl("postcontact",array("token"=>"xxx")); //TODO set token
-		$this->app->view->appendData($form);
-		$this->data['content'] = $this->app->view->fetch("contactform.php");
+		$this->addWidget("section1", ["handler"=>"textWidget","arguments"=>["front/section1"]]);
+		$this->addWidget("section2", ["handler"=>"textWidget","arguments"=>["front/section2"]]);
+		//var_dump($this->data['widgets']);
+		$this->app->view->appendData($this->data);
+		$this->data['content'] = $this->app->view->fetch("frontpage.php");
 		$this->app->render("index.php", $this->data);
-		
-	}
+	}	
 	
 	public function theNews() {
+		$this->removeWidget("discuss");
 		 $this->data['content'] = $this->newsWidget();
 		 $this->app->render("index.php", $this->data);
 		
@@ -45,9 +40,25 @@ class Haiku extends PHaiku {
 		
 	}
 	
+	/**
+	 * Just an example of a custom controller method, called if you access [lang]/contact
+	 */	
+	public function contactForm($args) {
+		$this->removeWidget("discuss");
+		$filename = $this->getFilepath("_form","php");
+		if(file_exists($filename)) {
+			$form = include $filename;
+		}
+		$form['action'] = $this->setUrl("postcontact",array("token"=>"xxx")); //TODO set token
+		$this->app->view->appendData($form);
+		$this->data['content'] = $this->app->view->fetch("contactform.php");
+		$this->app->render("index.php", $this->data);
+		
+	}
+	
 	public function newsWidget() {
 		$d = dir(trim($this->getFilepath("news", ""),"."));
-		$content = "";
+		$content = "<h2>News</h2>";
 		while (false !== ($file = $d->read())) {
 			$file = trim($file,".php");
 			$meta = explode("_", $file);

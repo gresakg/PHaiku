@@ -2,7 +2,7 @@
 return [
 	
 	"Home" => "/" ,
-	"Todo" => "/p/todo",
+	"Download" => "/p/download",
 	"Documentation" => [
 		"Basic" => "/p/documentation/basic",
 		"Templates" => "/p/documentation/templates",
@@ -11,6 +11,7 @@ return [
 		"Reference" => "/p/documentation/reference",
 		"License" => "/p/license",
 	],
+	"Todo" => "/p/todo",
 	"Contact" => "/contact"
 	
 ];
