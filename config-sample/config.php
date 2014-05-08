@@ -25,19 +25,23 @@ return [
 		],
 		"twitter" => [
 			"handler"=>"textWidget",
-			"arguments" => "twitter"
+			"arguments" => ["widgets/twitter"]
 		],
 		"discuss" => [
 			"handler"=>"textWidget",
-			"arguments" => ["discuss"]
+			"arguments" => ["widgets/discuss"]
 		],
 		"analytics" => [
 			"handler"=>"textWidget",
-			"arguments" => "analytics"
+			"arguments" => ["widgets/analytics"]
 		],
 		"forkme" => [
 			"handler"=>"textWidget",
-			"arguments" => "forkme"
+			"arguments" => ["widgets/forkme"]
+		],
+		"news" => [
+			"handler"=>"newsWidget",
+			"arguments"=>[5]
 		],
 	],
 	//define basic routes
@@ -46,7 +50,7 @@ return [
 			"name" => "index",
 			"route" => "/",
 			"method" => "get",
-			"handler" => "setPage",
+			"handler" => "frontPage",
 		],
 		[
 			"name" => "page",
@@ -55,6 +59,18 @@ return [
 			"handler" => "setPage",
 		],	
 	//custom routes
+		[
+			"name" => "news",
+			"route" => "/news",
+			"method" => "get",
+			"handler" => "theNews",
+		],
+		[
+			"name" => "newsitem",
+			"route" => "/n/:segments+",
+			"method" => "get",
+			"handler" => "newsItem",
+		],
 		[
 			"name" => "contact",
 			"route" => "/contact",

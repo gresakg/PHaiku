@@ -11,6 +11,12 @@ abstract class PHaiku {
 	public static $basedir;
 	
 	/**
+	 * Phaiku version.
+	 * @var string 
+	 */
+	public static $version;
+	
+	/**
 	 * Instance of Slim
 	 * @var object
 	 */
@@ -106,6 +112,7 @@ abstract class PHaiku {
 		$data['baseurl'] = $this->getBaseUrl();
 		$data['language'] = empty($this->lang)?$this->app->config("default.lang"):$this->lang;
 		$data['template_url'] = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));
+		$data['phaiku_version'] = self::$version;
 		$this->data = array_merge($this->data, $data);
 	}
 	
@@ -143,13 +150,21 @@ abstract class PHaiku {
 		else {
 			$page = implode("/", $args[0]);
 		}
-		$filename = $this->getFilepath($page);
-		if(file_exists($filename)) {
-			$this->data['content'] = file_get_contents($filename);
-		} else {
+		$page = "pages/".$page;
+		$this->data['content'] = $this->textWidget($page);
+		if(empty($this->data['content']))
 			$this->app->pass();
-		}
 		$this->app->render("index.php", $this->data);
+	}
+	
+	public function textWidget($name) {
+		$filename = $this->getFilepath($name);
+		if(file_exists($filename)) {
+			return file_get_contents($filename);
+		}
+		else {
+			return "";
+		}
 	}
 	
 	/**
@@ -186,7 +201,7 @@ abstract class PHaiku {
 	 * @return html string containing menu
 	 */
 	protected function setMenu() {
-		$filename = $this->getFilepath("_menu", "php");
+		$filename = $this->getFilepath("widgets/menu", "php");
 		if(!file_exists($filename)) return;
 		$menudata = require $filename;		
 		$baseurl = $this->getBaseUrl().(empty($this->lang)?"":"/".$this->lang);
