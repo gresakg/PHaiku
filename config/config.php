@@ -25,23 +25,23 @@ return [
 		],
 		"twitter" => [
 			"handler"=>"textWidget",
-			"arguments" => "twitter"
+			"arguments" => ["widgets/twitter"]
 		],
 		"discuss" => [
 			"handler"=>"textWidget",
-			"arguments" => ["discuss"]
+			"arguments" => ["widgets/discuss"]
 		],
 		"analytics" => [
 			"handler"=>"textWidget",
-			"arguments" => "analytics"
+			"arguments" => ["widgets/analytics"]
 		],
 		"forkme" => [
 			"handler"=>"textWidget",
-			"arguments" => "forkme"
+			"arguments" => ["widgets/forkme"]
 		],
 		"news" => [
 			"handler"=>"newsWidget",
-			"arguments"=>NULL
+			"arguments"=>[5]
 		],
 	],
 	//define basic routes

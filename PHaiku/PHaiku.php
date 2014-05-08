@@ -201,7 +201,7 @@ abstract class PHaiku {
 	 * @return html string containing menu
 	 */
 	protected function setMenu() {
-		$filename = $this->getFilepath("_menu", "php");
+		$filename = $this->getFilepath("widgets/menu", "php");
 		if(!file_exists($filename)) return;
 		$menudata = require $filename;		
 		$baseurl = $this->getBaseUrl().(empty($this->lang)?"":"/".$this->lang);

@@ -21,7 +21,7 @@ class Haiku extends PHaiku {
 	
 	public function theNews() {
 		$this->removeWidget("discuss");
-		 $this->data['content'] = $this->newsWidget();
+		 $this->data['content'] = $this->newsWidget(20);
 		 $this->app->render("index.php", $this->data);
 		
 	}
@@ -56,10 +56,12 @@ class Haiku extends PHaiku {
 		
 	}
 	
-	public function newsWidget() {
+	public function newsWidget($n) {
 		$d = dir(trim($this->getFilepath("news", ""),"."));
 		$content = "<h2>News</h2>";
+		$i=0;
 		while (false !== ($file = $d->read())) {
+			$i++;
 			$file = trim($file,".php");
 			$meta = explode("_", $file);
 			if(count($meta)<3)	continue;
@@ -74,13 +76,14 @@ class Haiku extends PHaiku {
 			
 			$this->app->view->appendData($news);
 			$content .= $this->app->view->fetch("widgets/news.php");
+			if($i>=$n) break;
 		 }
 		 $d->close();
 		 return $content;
 	}
 	
 	public function haikuWidget() {
-		$filename = $this->getFilepath("_haikus","php");
+		$filename = $this->getFilepath("widgets/haikus","php");
 		if(file_exists($filename)) {
 			$haikus = include $filename;
 		}
