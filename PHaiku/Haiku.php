@@ -32,7 +32,7 @@ class Haiku extends PHaiku {
 		if(file_exists($filename)) {
 			$news = include $filename;
 		}
-		$news['content'] = nl2br($news['content']);
+		$news['content'] = $news['content'];
 		$news['date'] = $this->getNewsDate($args);
 		$this->app->view->appendData($news);
 		$this->data['content'] = $this->app->view->fetch("newsitem.php");
