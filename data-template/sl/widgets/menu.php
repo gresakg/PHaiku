@@ -3,9 +3,8 @@ return [
 	
 	"Home" => "/" ,
 	"Vzorčna stran" => "/p/vzorec",
-	"Unicorns" => [
-		"Unicorns Rule" => "/p/O-samorogih/samorogi-obstajajo",
-		"License" => "/p/license",
+	"O Samorogih" => [
+		"Samorogi obstajajo" => "/p/O-samorogih/samorogi-obstajajo",
 	],
 	"Novice" => "/news",
 	"Kontakt" => "/contact"

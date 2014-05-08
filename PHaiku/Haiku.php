@@ -45,7 +45,7 @@ class Haiku extends PHaiku {
 	 */	
 	public function contactForm($args) {
 		$this->removeWidget("discuss");
-		$filename = $this->getFilepath("_form","php");
+		$filename = $this->getFilepath("widgets/form","php");
 		if(file_exists($filename)) {
 			$form = include $filename;
 		}
