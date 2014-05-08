@@ -4,7 +4,7 @@ return [
 	"Home" => "/" ,
 	"Sample page" => "/p/sample",
 	"Unicorns" => [
-		"Unicorns Love Sugar Moonbeams" => "/p/Unicornd/unicorns-love-sugar-moonbeams",
+		"Unicorns Love Sugar Moonbeams" => "/p/Unicorns/unicorns-love-sugar-moonbeams",
 	],
 	"News" => "/news",
 	"Conact" => "/contact"
