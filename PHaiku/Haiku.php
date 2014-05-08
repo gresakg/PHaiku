@@ -69,7 +69,7 @@ class Haiku extends PHaiku {
 			if(file_exists($filename)) {
 				$news = include $filename;
 			} else continue;
-			$news['content'] = nl2br($news['content']);
+			$news['content'] = $news['content'];
 			$news['date'] = $this->getNewsDate($meta);
 			$url = implode("/", array_shift(array_chunk($meta, 3)))."/".implode("_",array_splice($meta,3));
 			$news['link'] = $this->setUrl("newsitem", ["segments"=>$url]);
