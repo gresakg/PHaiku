@@ -1,7 +1,7 @@
 <?php
 
 return [
-	"form_title" => "Contact us", 
+	"form_title" => "Pišite nam", 
 	"form_intro" => "If you have anything you whish to communcate directly to us,"
 	 . "please use this form and be sure to leave a valid email address, so we can"
 	 . "come back to you.", 
