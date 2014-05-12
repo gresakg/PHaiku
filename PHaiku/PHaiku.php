@@ -44,8 +44,14 @@ abstract class PHaiku {
 		$this->app = $di['slim'];
 		$this->env = $di['env'];
 		$this->conf = $di['config'];
+		$this->data = $di['data'];
+		$this->di = $di;
 		$this->setLangRoute();
 		
+	}
+	
+	public function newData() {
+		return $this->di['newdata'];
 	}
 	
 	/**
@@ -107,12 +113,12 @@ abstract class PHaiku {
 	protected function setBasicData() {		
 		$filename = $this->getFilepath("_config","php");
 		if(file_exists($filename)) {
-			$data = include $filename;
+			$data['site'] = (object) include $filename;
 		}
-		$data['baseurl'] = $this->getBaseUrl();
-		$data['language'] = empty($this->lang)?$this->app->config("default.lang"):$this->lang;
-		$data['template_url'] = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));
-		$data['phaiku_version'] = self::$version;
+		$data['site']->baseurl = $this->getBaseUrl();
+		$data['site']->language = empty($this->lang)?$this->app->config("default.lang"):$this->lang;
+		$data['site']->template_url = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));
+		$data['site']->phaiku_version = self::$version;
 		$this->data = array_merge($this->data, $data);
 	}
 	
@@ -121,7 +127,6 @@ abstract class PHaiku {
 	 * @return object of type \StdClass for use in templates
 	 */
 	protected function setWidgets() {
-		$this->data["widgets"] = new \stdClass();
 		$widgets = $this->app->config("widgets");
 		foreach($widgets as $name => $params) {
 			$this->addWidget($name,$params);
@@ -151,8 +156,8 @@ abstract class PHaiku {
 			$page = implode("/", $args[0]);
 		}
 		$page = "pages/".$page;
-		$this->data['content'] = $this->textWidget($page);
-		if(empty($this->data['content']))
+		$this->data['page']->content = $this->textWidget($page);
+		if(empty($this->data['page']->content))
 			$this->app->pass();
 		$this->app->render("index.php", $this->data);
 	}
@@ -205,8 +210,8 @@ abstract class PHaiku {
 		if(!file_exists($filename)) return;
 		$menudata = require $filename;		
 		$baseurl = $this->getBaseUrl().(empty($this->lang)?"":"/".$this->lang);
-		$menu = self::menuIterator($menudata, $baseurl, "nav");
-		$this->app->view->appendData(["menu"=>$menu]);
+		$this->data['page']->menu = self::menuIterator($menudata, $baseurl, "nav");
+		$this->app->view->appendData($this->data);
 		return $this->app->view->fetch("widgets/menu.php");
 	}
 	

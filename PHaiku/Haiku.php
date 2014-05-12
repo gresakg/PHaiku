@@ -15,13 +15,13 @@ class Haiku extends PHaiku {
 		$this->addWidget("section2", ["handler"=>"textWidget","arguments"=>["front/section2"]]);
 		//var_dump($this->data['widgets']);
 		$this->app->view->appendData($this->data);
-		$this->data['content'] = $this->app->view->fetch("frontpage.php");
+		$this->data['page']->content = $this->app->view->fetch("frontpage.php");
 		$this->app->render("index.php", $this->data);
 	}	
 	
 	public function theNews() {
 		$this->removeWidget("discuss");
-		 $this->data['content'] = $this->newsWidget(20);
+		 $this->data['page']->content = $this->newsWidget(20);
 		 $this->app->render("index.php", $this->data);
 		
 	}
@@ -29,13 +29,13 @@ class Haiku extends PHaiku {
 	public function newsItem(array $args) {
 		$args = $args[0];
 		$filename = $this->getFilepath("news/".implode("_",$args),"php");
+		$news = $this->newData();
 		if(file_exists($filename)) {
-			$news = include $filename;
+			$news = (object) include $filename;
 		}
-		$news['content'] = $news['content'];
-		$news['date'] = $this->getNewsDate($args);
-		$this->app->view->appendData($news);
-		$this->data['content'] = $this->app->view->fetch("newsitem.php");
+		$news->date = $this->getNewsDate($args);
+		$this->app->view->appendData(["news"=>$news]);
+		$this->data['page']->content = $this->app->view->fetch("newsitem.php");
 		$this->app->render("index.php", $this->data);
 		
 	}
@@ -51,7 +51,7 @@ class Haiku extends PHaiku {
 		}
 		$form['action'] = $this->setUrl("postcontact",array("token"=>"xxx")); //TODO set token
 		$this->app->view->appendData($form);
-		$this->data['content'] = $this->app->view->fetch("contactform.php");
+		$this->data['page']->content = $this->app->view->fetch("contactform.php");
 		$this->app->render("index.php", $this->data);
 		
 	}
@@ -66,16 +66,17 @@ class Haiku extends PHaiku {
 			$meta = explode("_", $file);
 			if(count($meta)<3)	continue;
 			$filename = $this->getFilepath("news/".$file,"php");
+			$news = $this->newData();
 			if(file_exists($filename)) {
-				$news = include $filename;
+				$news = (object) include $filename;
 			} else continue;
-			$news['content'] = $news['content'];
-			$news['date'] = $this->getNewsDate($meta);
+			$news->date = $this->getNewsDate($meta);
 			$url = implode("/", array_shift(array_chunk($meta, 3)))."/".implode("_",array_splice($meta,3));
-			$news['link'] = $this->setUrl("newsitem", ["segments"=>$url]);
+			$news->link = $this->setUrl("newsitem", ["segments"=>$url]);
 			
-			$this->app->view->appendData($news);
+			$this->app->view->appendData(["news"=>$news]);
 			$content .= $this->app->view->fetch("widgets/news.php");
+			unset($news);
 			if($i>=$n) break;
 		 }
 		 $d->close();

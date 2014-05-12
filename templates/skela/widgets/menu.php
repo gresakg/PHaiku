@@ -1,6 +1,6 @@
 <div class="dropdowns">
 		<!-- navigation test -->
 		<a class="toggleMenu" href="#">Menu</a>
-		<?php echo $menu; ?>
+		<?php echo $page->menu; ?>
 
 </div>

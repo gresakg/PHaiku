@@ -1,8 +1,7 @@
 <?php 
 include("header.php");
 
-echo $content; 
+echo $page->content; 
 
 include("footer.php");
 ?>
-

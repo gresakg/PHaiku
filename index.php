@@ -1,5 +1,5 @@
 <?php
-//$startbench = microtime(true);
+$startbench = microtime(true);
 
 require __DIR__.'/Slim/Slim.php';
 
@@ -22,6 +22,17 @@ $di['env'] = function($c) {
 $di['haiku'] = function($c) {
 	return new $c['config']['class.name']($c);
 };
+
+$di['data'] = function() {
+	$data['site'] = new \PHaiku\Data();
+	$data['page'] = new \PHaiku\Data();
+	$data['widgets']= new \PHaiku\Data();
+	return $data;
+};
+
+$di['newdata'] = $di->factory(function () {
+    return new \PHaiku\Data();
+});
 
 include __DIR__.'/config/services.php';
 
