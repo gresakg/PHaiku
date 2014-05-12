@@ -1,7 +1,7 @@
 <?php
 namespace PHaiku;
 
-class Data extends stdClass {
+class Data extends \stdClass {
 	
 	public function __get($name) {
 		return "";

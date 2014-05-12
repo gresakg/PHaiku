@@ -1,7 +1,7 @@
 <?php  include("header.php"); ?>
 <div class="row">
 	<div class="content fourteen columns">
-		<?php echo $content;  ?>
+		<?php echo $page->content;  ?>
 		<?php echo $widgets->discuss; ?>
 	</div>
 	<aside class="four columns">

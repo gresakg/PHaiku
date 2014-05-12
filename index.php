@@ -1,5 +1,5 @@
 <?php
-//$startbench = microtime(true);
+$startbench = microtime(true);
 
 require __DIR__.'/Slim/Slim.php';
 
@@ -23,6 +23,17 @@ $di['haiku'] = function($c) {
 	return new $c['config']['class.name']($c);
 };
 
+$di['data'] = function() {
+	$data['site'] = new \PHaiku\Data();
+	$data['page'] = new \PHaiku\Data();
+	$data['widgets']= new \PHaiku\Data();
+	return $data;
+};
+
+$di['newdata'] = $di->factory(function () {
+    return new \PHaiku\Data();
+});
+
 include __DIR__.'/config/services.php';
 
 // end services definition
@@ -37,5 +48,5 @@ include __DIR__.'/config/services.php';
 
 
 $di['slim']->run();
-//$endbench = microtime(true);
-//echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
+$endbench = microtime(true);
+echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
