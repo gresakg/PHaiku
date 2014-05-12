@@ -9,6 +9,10 @@ class Haiku extends PHaiku {
 		parent::__construct($app);
 	}
 	
+	/**
+	 * The front page handler. Renders the front page.
+	 * @todo dynamic inclusion of sections
+	 */
 	public function frontPage() {
 		$this->removeWidget("discuss");
 		$this->addWidget("section1", ["handler"=>"textWidget","arguments"=>["front/section1"]]);
@@ -19,6 +23,10 @@ class Haiku extends PHaiku {
 		$this->app->render("index.php", $this->data);
 	}	
 	
+	/**
+	 * The news handler. Renders an agregation of news.
+	 * @todo pagination options
+	 */
 	public function theNews() {
 		$this->removeWidget("discuss");
 		 $this->data['page']->content = $this->newsWidget(20);
@@ -26,6 +34,10 @@ class Haiku extends PHaiku {
 		
 	}
 	
+	/**
+	 * News item handler. Renders a news item according to the passed uri
+	 * @param array $args uri arguments
+	 */
 	public function newsItem(array $args) {
 		$args = $args[0];
 		$filename = $this->getFilepath("news/".implode("_",$args),"php");
@@ -41,7 +53,7 @@ class Haiku extends PHaiku {
 	}
 	
 	/**
-	 * Just an example of a custom controller method, called if you access [lang]/contact
+	 * @todo Contact Form handler
 	 */	
 	public function contactForm($args) {
 		$this->removeWidget("discuss");
@@ -56,6 +68,11 @@ class Haiku extends PHaiku {
 		
 	}
 	
+	/**
+	 * News widget returns a view of agregated news
+	 * @param type $n limit of news to be agragated
+	 * @return html string, an agregation of $n news
+	 */
 	public function newsWidget($n) {
 		$d = dir(trim($this->getFilepath("news", ""),"."));
 		$content = "<h2>News</h2>";
@@ -83,6 +100,10 @@ class Haiku extends PHaiku {
 		 return $content;
 	}
 	
+	/**
+	 * Sample widget that displays a random haiku from the widgets/haikus.php file
+	 * @return html string
+	 */
 	public function haikuWidget() {
 		$filename = $this->getFilepath("widgets/haikus","php");
 		if(file_exists($filename)) {
@@ -92,11 +113,20 @@ class Haiku extends PHaiku {
 		
 	}
 	
+	/**
+	 * Transforms the array [Year, day, month] to a date
+	 * @todo configurable date format
+	 * @param array $meta
+	 * @return string formated date
+	 */
 	protected function getNewsDate(array $meta) {
 		$time = mktime(0,0,0,(int) $meta[1], (int) $meta[2], (int) $meta[0]);
 		return date("d. m. Y",$time);
 	}
 	
+	/**
+	 * @todo form to be processed
+	 */
 	protected function processForm() {
 		//redirects on success
 		//return errors and data on fail

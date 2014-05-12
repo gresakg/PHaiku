@@ -1,5 +1,5 @@
 <?php
-$startbench = microtime(true);
+//$startbench = microtime(true);
 
 require __DIR__.'/Slim/Slim.php';
 
@@ -42,7 +42,7 @@ include __DIR__.'/config/services.php';
 
 \PHaiku\PHaiku::$basedir = __DIR__;
 
-\PHaiku\PHaiku::$version = "0.50.19.14";
+\PHaiku\PHaiku::$version = "0.51.20.14";
 
 \PHaiku\PHaiku::setRoutes($di);
 

@@ -50,10 +50,6 @@ abstract class PHaiku {
 		
 	}
 	
-	public function newData() {
-		return $this->di['newdata'];
-	}
-	
 	/**
 	 * Setup routing. Define your routes in config/config.php
 	 * @param \Pimple\Pimple $di
@@ -69,7 +65,7 @@ abstract class PHaiku {
 	}
 	
 	/**
-	 * Initialies the environement after the route is known
+	 * Initialises the environement after the route is known
 	 *  @param array $args an array of route arguments
 	 * @return array $args arguments
 	 */
@@ -82,8 +78,7 @@ abstract class PHaiku {
 	}
 		
 	/**
-	 * This method processes arguments passed by the route and does all the initializations
-	 * that are common to all the routes.
+	 * This method processes arguments passed by the route.
 	 * @param array $args an array of route arguments, eventually multidimensional.
 	 * @return array $args arguments
 	 */
@@ -107,7 +102,6 @@ abstract class PHaiku {
 	
 	/**
 	 * Fetches and sets data common to all the pages
-	 * @param string $lang current language
 	 * @return array the set data are also returned
 	 */
 	protected function setBasicData() {		
@@ -124,7 +118,7 @@ abstract class PHaiku {
 	
 	/**
 	 * Setup your widgets
-	 * @return object of type \StdClass for use in templates
+	 * @return object of type \PHaiku\Data for use in templates
 	 */
 	protected function setWidgets() {
 		$widgets = $this->app->config("widgets");
@@ -133,6 +127,19 @@ abstract class PHaiku {
 		}
 	}
 	
+	/**
+	 * Creates a new instance of \PHaiku\Data
+	 * @return object of class \PHaiku\Data
+	 */
+	public function newData() {
+		return $this->di['newdata'];
+	}
+	
+	/**
+	 * Adds a widget to the widgets object.
+	 * @param type $name
+	 * @param type $params
+	 */
 	public function addWidget($name,$params) {	
 		if(!is_array($params['arguments'])) {
 			$params['arguments'] = explode(",",$params['arguments']);
@@ -140,12 +147,18 @@ abstract class PHaiku {
 		$this->data["widgets"]->$name = call_user_func_array(array($this,$params['handler']), $params['arguments']);
 	}
 	
+	/**
+	 * Empties out the widgets property defined by $name, so that the widget will
+	 * only print an empty string, resulting in a removal of the widget from the 
+	 * rendered page.
+	 * @param string $name name of the property to be emptied
+	 */
 	public function removeWidget($name) {
 		$this->data['widgets']->$name = "";
 	}
 	
 	/**
-	 * The main page controller that calls the render function
+	 * The main page controller that calls the \Slim\View::render() function
 	 * @param array $args
 	 */
 	public function setPage(array $args) {
@@ -162,6 +175,11 @@ abstract class PHaiku {
 		$this->app->render("index.php", $this->data);
 	}
 	
+	/**
+	 * This widget handler reads the contents of a html file and returns it.
+	 * @param string $name filename
+	 * @return string contents of html file 
+	 */
 	public function textWidget($name) {
 		$filename = $this->getFilepath($name);
 		if(file_exists($filename)) {
@@ -175,8 +193,9 @@ abstract class PHaiku {
 	/**
 	 * PHaiku's wrapper for slims urlFor function that takes into account the lang 
 	 * arguments
-	 * @param type $routename
-	 * @param array $args
+	 * @param string $routename the name of the route as defined in config routes
+	 * @param array $args arguments to be passed to the route, language excluded
+	 * @return string href link
 	 */
 	public function setUrl($routename, array $args) {
 		if($this->app->config("multilingual")) {
@@ -187,7 +206,7 @@ abstract class PHaiku {
 	}
 	
 	/**
-	 * The language menu
+	 * Constructs the language menu according to the config(languages) setting.
 	 * @return html string containing a language menu or false
 	 */
 	protected function langMenu() {
@@ -202,7 +221,7 @@ abstract class PHaiku {
 	}
 	
 	/**
-	 * Builds the main menu
+	 * Builds the main menu. Define your menu items in the widgets/menu.php file.
 	 * @return html string containing menu
 	 */
 	protected function setMenu() {
@@ -335,4 +354,3 @@ abstract class PHaiku {
 	}
 	
 }
-
