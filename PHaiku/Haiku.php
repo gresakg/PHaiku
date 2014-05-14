@@ -56,13 +56,25 @@ class Haiku extends PHaiku {
 	 * @todo Contact Form handler
 	 */	
 	public function contactForm($args) {
-		$this->removeWidget("discuss");
+		include_once self::$basedir.'/libs/recaptchalib.php';
+		$this->data['form'] = $this->newData();
+		$this->data['errors'] = $this->newData();
+		//need validation strings, so load early
 		$filename = $this->getFilepath("widgets/form","php");
 		if(file_exists($filename)) {
 			$form = include $filename;
 		}
-		$form['action'] = $this->setUrl("postcontact",array("token"=>"xxx")); //TODO set token
-		$this->app->view->appendData($form);
+		$this->data['form']->appendArray($form);
+		
+		if($this->app->request->isPost())
+			$this->processForm();
+		
+		$this->data['form']->captcha = recaptcha_get_html($this->app->config("recaptcha.publickey"));
+		$this->removeWidget("discuss");
+		$token = uniqid();
+		$this->data['form']->action = $this->setUrl("postcontact",array("token"=>$token)); //TODO set token
+		
+		$this->app->view->appendData($this->data);
 		$this->data['page']->content = $this->app->view->fetch("contactform.php");
 		$this->app->render("index.php", $this->data);
 		
@@ -128,9 +140,41 @@ class Haiku extends PHaiku {
 	 * @todo form to be processed
 	 */
 	protected function processForm() {
-		//redirects on success
-		//return errors and data on fail
-		echo $this->app->request->post("name");
+		$errors = array();
+		$name = htmlspecialchars(strip_tags(trim($this->app->request->post("name"))),ENT_QUOTES, "UTF-8");
+		$eadr = trim($this->app->request->post("eadr"));
+		$message = htmlspecialchars(strip_tags(trim($this->app->request->post("message"))),ENT_QUOTES, "UTF-8");
+		if(preg_match("/^[\pL\s]+$/u",$name) != 1) $errors['name'] = $this->data['form']->error['name'];
+		if(filter_var($eadr,FILTER_VALIDATE_EMAIL)===false) $errors['eadr'] = $this->data['form']->error['eadr'];
+		if(empty($message)) $errors['message'] = $this->data['form']->error['message'];
+		$resp = recaptcha_check_answer(
+			$this->app->config("recaptcha.privatekey"), 
+			$this->app->request->getIp(), 
+			$this->app->request->post("recaptcha_challenge_field"), 
+			$this->app->request->post("ecaptcha_response_field"));
+		if(!$resp->is_valid) $errors['recaptcha'] = $this->data['form']->error['recaptcha'];
+		
+		if(!empty($errors)) {	
+			$this->data['errors']->appendArray($errors);
+			$this->data['form']->name = $name;
+			$this->data['form']->eadr = $eadr;
+			$this->data['form']->message = 	$message;
+		}
+		else {
+			$to = $this->app->config("contact.mail");
+			$subject = $this->data['form']->email_subject.$name;
+			$headers = 'From:'.$name. "<".$eadr.">" . "\r\n" .
+               'Reply-To:'. $to . "\r\n" .
+               'MIME-Version:   1.0' . "\r\n" .
+               'Content-Type:   text/plain; format=flowed; charset="utf-8"; reply-type=response' . "\r\n" .
+               'X-Mailer: PHP/' . phpversion();
+			$filename = $this->getFilepath("contacts","csv");
+			$h = fopen($filename, "a");
+			$line = '"'.$name.'","'.$eadr.'","'.addslashes($message).'";'."\n";
+			fwrite($h,$line);
+			fclose($h);
+			mail($to,$subject,$headers);
+		}
 	}
 
 	

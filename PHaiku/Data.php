@@ -11,5 +11,11 @@ class Data extends \stdClass {
 		$this->$name = new \PHaiku\Data();
 	}
 	
+	public function appendArray(array $data) {
+		foreach($data as $key => $item) {
+			$this->$key = $item;
+		}
+	}
+	
 }
 

@@ -26,6 +26,11 @@
 	<![endif]-->
 	<script src="<?php echo $site->template_url; ?>/js/jquery-1.10.2.min.js"></script>
 	<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+	<script type="text/javascript">
+		var RecaptchaOptions = {
+			theme : 'clean'
+		};
+	</script>
 	
 	<!-- Favicons
 	================================================== -->
