@@ -151,7 +151,7 @@ class Haiku extends PHaiku {
 			$this->app->config("recaptcha.privatekey"), 
 			$this->app->request->getIp(), 
 			$this->app->request->post("recaptcha_challenge_field"), 
-			$this->app->request->post("ecaptcha_response_field"));
+			$this->app->request->post("recaptcha_response_field"));
 		if(!$resp->is_valid) $errors['recaptcha'] = $this->data['form']->error['recaptcha'];
 		
 		if(!empty($errors)) {	
