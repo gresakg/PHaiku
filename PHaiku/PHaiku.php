@@ -197,7 +197,7 @@ abstract class PHaiku {
 	 * @param array $args arguments to be passed to the route, language excluded
 	 * @return string href link
 	 */
-	public function setUrl($routename, array $args) {
+	public function setUrl($routename, array $args=array()) {
 		if($this->app->config("multilingual")) {
 			$args = array_merge(["lang"=>$this->lang],$args);
 		}

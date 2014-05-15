@@ -173,7 +173,7 @@ class Haiku extends PHaiku {
 			fwrite($h,$line);
 			fclose($h);
 			mail($to,$subject,wordwrap($message, 70, "\r\n"),$headers);
-			$this->app->redirect($this->setUrl("contact", array("token"=>"ok")));
+			$this->app->redirect($this->setUrl("contactok"));
 		}
 	}
 	
