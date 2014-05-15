@@ -160,19 +160,32 @@ class Haiku extends PHaiku {
 			$this->data['form']->message = 	$message;
 		}
 		else {
-			$to = $this->app->config("contact.mail");
-			$subject = $this->data['form']->email_subject.$name;
-			$headers = 'From:'.$name. "<".$eadr.">" . "\r\n" .
-               'Reply-To:'. $to . "\r\n" .
-               'MIME-Version:   1.0' . "\r\n" .
-               'Content-Type:   text/plain; format=flowed; charset="utf-8"; reply-type=response' . "\r\n" .
-               'X-Mailer: PHP/' . phpversion();
 			$filename = $this->getFilepath("contacts","csv");
 			$h = fopen($filename, "a");
 			$line = '"'.$name.'","'.$eadr.'","'.addslashes($message).'";'."\n";
 			fwrite($h,$line);
 			fclose($h);
-			mail($to,$subject,wordwrap($message, 70, "\r\n"),$headers);
+			
+			require_once 'Mail.php';
+			$from = $name. "<".$eadr.">";
+			$to = $this->app->config("contact.mail");
+			$subject = $this->data['form']->email_subject.$name;
+			$body = $message;
+			$host = $this->app->config("mail.host");
+			$username = $this->app->config("mail.username");
+			$password = $this->app->config("mail.password");
+			
+			$headers = array ('From' => $from,
+				'To' => $to,
+				'Subject' => $subject);
+			$smtp = \Mail::factory('smtp',
+				array ('host' => $host,
+				  'auth' => true,
+				  'username' => $username,
+				  'password' => $password));
+
+			$mail = $smtp->send($to, $headers, $body);
+			
 			$this->app->redirect($this->setUrl("contactok"));
 		}
 	}
