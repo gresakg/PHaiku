@@ -76,13 +76,13 @@ return [
 		],
 		[
 			"name" => "contact",
-			"route" => "/contact",
+			"route" => "/contact/",
 			"method" => "get",
 			"handler" => "contactForm",
 		],
 		[
 			"name" => "contactok",
-			"route" => "/contact/ok",
+			"route" => "/contact/ok/",
 			"method" => "get",
 			"handler" => "contactOk",
 		],
