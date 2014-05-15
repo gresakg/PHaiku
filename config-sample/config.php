@@ -81,6 +81,12 @@ return [
 			"handler" => "contactForm",
 		],
 		[
+			"name" => "contactok",
+			"route" => "/contact/ok",
+			"method" => "get",
+			"handler" => "contactOk",
+		],
+		[
 			"name" => "postcontact",
 			"route" => "/contact/:token",
 			"method" => "post",

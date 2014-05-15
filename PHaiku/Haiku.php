@@ -57,27 +57,26 @@ class Haiku extends PHaiku {
 	 */	
 	public function contactForm($args) {
 		include_once self::$basedir.'/libs/recaptchalib.php';
-		$this->data['form'] = $this->newData();
-		$this->data['errors'] = $this->newData();
-		//need validation strings, so load early
-		$filename = $this->getFilepath("widgets/form","php");
-		if(file_exists($filename)) {
-			$form = include $filename;
-		}
-		$this->data['form']->appendArray($form);
-		
+		$this->getFormData();
 		if($this->app->request->isPost())
-			$this->processForm();
+			$this->processForm($args[0]);
 		
 		$this->data['form']->captcha = recaptcha_get_html($this->app->config("recaptcha.publickey"));
 		$this->removeWidget("discuss");
 		$token = uniqid();
 		$this->data['form']->action = $this->setUrl("postcontact",array("token"=>$token)); //TODO set token
-		
 		$this->app->view->appendData($this->data);
 		$this->data['page']->content = $this->app->view->fetch("contactform.php");
 		$this->app->render("index.php", $this->data);
 		
+	}
+	
+	public function contactOk() {
+		$this->removeWidget("discuss");
+		$this->getFormData();
+		$this->app->view->appendData($this->data);
+		$this->data['page']->content = $this->app->view->fetch("contactok.php");
+		$this->app->render("index.php", $this->data);
 	}
 	
 	/**
@@ -173,8 +172,20 @@ class Haiku extends PHaiku {
 			$line = '"'.$name.'","'.$eadr.'","'.addslashes($message).'";'."\n";
 			fwrite($h,$line);
 			fclose($h);
-			mail($to,$subject,$headers);
+			mail($to,$subject,wordwrap($message, 70, "\r\n"),$headers);
+			$this->app->reditect($this->setUrl("contact", array("token"=>"ok")));
 		}
+	}
+	
+	protected function getFormData() {
+		$this->data['form'] = $this->newData();
+		$this->data['errors'] = $this->newData();
+		//need validation strings, so load early
+		$filename = $this->getFilepath("widgets/form","php");
+		if(file_exists($filename)) {
+			$form = include $filename;
+		}
+		$this->data['form']->appendArray($form);
 	}
 
 	
