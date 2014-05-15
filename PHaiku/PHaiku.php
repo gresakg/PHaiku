@@ -331,6 +331,7 @@ abstract class PHaiku {
 	private function getBrowserLanguage() {
 		if(!is_array($this->app->config('languages')))
 			return false;
+		$deflang = $this->app->config("default.language");
 		$http_accept_language = $this->app->request->headers->get('HTTP_ACCEPT_LANGUAGE');
 		$langs = explode(",",$http_accept_language);
 		foreach($langs as $lang) {
