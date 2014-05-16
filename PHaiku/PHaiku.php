@@ -107,13 +107,14 @@ abstract class PHaiku {
 	protected function setBasicData() {		
 		$filename = $this->getFilepath("_config","php");
 		if(file_exists($filename)) {
-			$data['site'] = (object) include $filename;
+			$base = include $filename;
 		}
-		$data['site']->baseurl = $this->getBaseUrl();
-		$data['site']->language = empty($this->lang)?$this->app->config("default.lang"):$this->lang;
-		$data['site']->template_url = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));
-		$data['site']->phaiku_version = self::$version;
-		$this->data = array_merge($this->data, $data);
+		$this->data['site']->appendArray($base);
+		$this->data['site']->baseurl = $this->getBaseUrl();
+		$this->data['site']->language = empty($this->lang)?$this->app->config("default.lang"):$this->lang;
+		$this->data['site']->template_url = $this->getBaseUrl().(trim($this->app->config("templates.path"),"."));
+		$this->data['site']->phaiku_version = self::$version;
+		//$this->data = array_merge($this->data, $data);
 	}
 	
 	/**
