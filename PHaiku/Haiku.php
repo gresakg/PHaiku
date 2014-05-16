@@ -97,7 +97,8 @@ class Haiku extends PHaiku {
 			$filename = $this->getFilepath("news/".$file,"php");
 			$news = $this->newData();
 			if(file_exists($filename)) {
-				$news = (object) include $filename;
+				$newsdata = include $filename;
+				$news->appendArray($newsdata);
 			} else continue;
 			$news->date = $this->getNewsDate($meta);
 			$url = implode("/", array_shift(array_chunk($meta, 3)))."/".implode("_",array_splice($meta,3));
