@@ -41,10 +41,11 @@ class Haiku extends PHaiku {
 	public function newsItem(array $args) {
 		$args = $args[0];
 		$filename = $this->getFilepath("news/".implode("_",$args),"php");
-		$news = $this->newData();
 		if(file_exists($filename)) {
-			$news = (object) include $filename;
+			$newsdata = include $filename;
 		}
+		$news = $this->newData();
+		$news->appendArray($newsdata);
 		$news->date = $this->getNewsDate($args);
 		$this->app->view->appendData(["news"=>$news]);
 		$this->data['page']->content = $this->app->view->fetch("newsitem.php");
