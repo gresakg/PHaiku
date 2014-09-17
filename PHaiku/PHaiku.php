@@ -52,6 +52,8 @@ abstract class PHaiku {
 	
 	/**
 	 * Setup routing. Define your routes in config/config.php
+	 * This static method is called from the front controller (index.php)
+	 * Each route when called by slim then actually instantiates Phaiku.
 	 * @param \Pimple\Pimple $di
 	 */
 	public static function setRoutes(\Pimple\Pimple $di) {
@@ -66,7 +68,8 @@ abstract class PHaiku {
 	
 	/**
 	 * Initialises the environement after the route is known
-	 *  @param array $args an array of route arguments
+	 * This method is called from every route defined with setRoutes method.
+	 * @param array $args an array of route arguments
 	 * @return array $args arguments
 	 */
 	private function init($args) {
@@ -118,7 +121,7 @@ abstract class PHaiku {
 	}
 	
 	/**
-	 * Setup your widgets
+	 * Sets the default widgets defined in the configuration. 
 	 * @return object of type \PHaiku\Data for use in templates
 	 */
 	protected function setWidgets() {
