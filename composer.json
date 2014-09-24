@@ -1,0 +1,11 @@
+{
+    "require": {
+        "slim/slim": "2.*",
+		"pimple/pimple": "3.*"
+    },
+    "autoload": {
+        "psr-0": {
+	    "": "src/"
+	}
+    }
+}

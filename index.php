@@ -1,14 +1,16 @@
 <?php
 //$startbench = microtime(true);
 
-require __DIR__.'/Slim/Slim.php';
+//require __DIR__.'/Slim/Slim.php';
 
-\Slim\Slim::registerAutoloader();
+//\Slim\Slim::registerAutoloader();
+
+require_once __DIR__.'/vendor/autoload.php';
 
 // define services
 
 // use pimple as dependency injector
-$di = new \Pimple\Pimple();
+$di = new \Pimple\Container();
 
 // load basic configurations
 $di['config'] = require __DIR__.'/config/config.php';
@@ -54,7 +56,7 @@ include __DIR__.'/config/services.php';
 \PHaiku\PHaiku::$basedir = __DIR__;
 
 //define the version
-\PHaiku\PHaiku::$version = "0.64.38.14";
+\PHaiku\PHaiku::$version = "0.70.38.14";
 
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);

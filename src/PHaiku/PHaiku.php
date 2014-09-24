@@ -40,7 +40,7 @@ abstract class PHaiku {
 	 */
 	protected $data = [];
 	
-	public function __construct(\Pimple\Pimple $di) {
+	public function __construct(\Pimple\Container $di) {
 		$this->app = $di['slim'];
 		$this->env = $di['env'];
 		$this->conf = $di['config'];
@@ -54,9 +54,9 @@ abstract class PHaiku {
 	 * Setup routing. Define your routes in config/config.php
 	 * This static method is called from the front controller (index.php)
 	 * Each route when called by slim then actually instantiates Phaiku.
-	 * @param \Pimple\Pimple $di
+	 * @param \Pimple\Container $di
 	 */
-	public static function setRoutes(\Pimple\Pimple $di) {
+	public static function setRoutes(\Pimple\Container $di) {
 		$routes = $di['config']["routes"];
 		foreach($routes as $route) {
 			$di['slim']->map( $di['haiku']->lang_route.$route['route'], function() use ($di, $route) {
