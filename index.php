@@ -56,7 +56,7 @@ include __DIR__.'/config/services.php';
 \PHaiku\PHaiku::$basedir = __DIR__;
 
 //define the version
-\PHaiku\PHaiku::$version = "0.70.38.14";
+\PHaiku\PHaiku::$version = "0.70.39.14";
 
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);
