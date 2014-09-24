@@ -30,7 +30,8 @@ composer install
 
 ```
 
-If you don't have composer installed (yet), use the classic method described (here)[https://getcomposer.org/doc/01-basic-usage.md]
+If you don't have composer installed (yet), (install it)[https://getcomposer.org/doc/01-basic-usage.md#installation] 
+and then install dependencies as described (here)[https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies]
 
 The fastest way to get up and running is simply by renaming config-sample 
 and data-sample folders respectively to config and data. Then just change 
