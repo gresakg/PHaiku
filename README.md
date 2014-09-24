@@ -12,17 +12,29 @@ poetry form of Japanese origin, consisting of only five verses with respectively
 
 ## Download and install
 
-To install PHaiku, use git to clone it to your public folder. The fastest way to get
-up and running is simply by renaming config-sample and data-sample folders respectively
-to config and data.
-Then just change the data ...
+To install PHaiku, use git to clone it to your public folder. 
 
 ```
 
 git clone https://github.com/gresakg/PHaiku.git myproject
 
 ```		
+
 Alternatively, you can download the zip package and unzip it to your public folder.
+
+After that, please install dependencies by running 
+
+```
+
+composer install
+
+```
+
+If you don't have composer installed (yet), use the classic method described (here)[https://getcomposer.org/doc/01-basic-usage.md]
+
+The fastest way to get up and running is simply by renaming config-sample 
+and data-sample folders respectively to config and data. Then just change 
+the data and configuration ...
 
 ## Demo and support
 
