@@ -40,11 +40,37 @@ abstract class PHaiku {
 	 */
 	protected $data = [];
 	
+	/**
+	 * Caching service
+	 * @var object
+	 */
+	protected $cache;
+	
+	/**
+	 * Cache key for current session
+	 * @var type 
+	 */
+	protected $cachekey;
+
+	/**
+	 * Is page cached
+	 * @var bool
+	 */
+	protected $cached = false;
+
+
+	/**
+	 * A way for controllers to disable caching
+	 * @var boolean
+	 */
+	protected $nocache = false;
+	
 	public function __construct(\Pimple\Container $di) {
 		$this->app = $di['slim'];
 		$this->env = $di['env'];
 		$this->conf = $di['config'];
 		$this->data = $di['data'];
+		$this->cache = $di['cache'];
 		$this->di = $di;
 		$this->setLangRoute();
 		
@@ -60,6 +86,11 @@ abstract class PHaiku {
 		$routes = $di['config']["routes"];
 		foreach($routes as $route) {
 			$di['slim']->map( $di['haiku']->lang_route.$route['route'], function() use ($di, $route) {
+				$cache = $di['haiku']->getCache($route['name']);
+				if($cache !== false) { 
+					echo $cache;
+					return;
+				}
 				$args = $di['haiku']->init(func_get_args());
 				$di['haiku']->$route['handler']($args);
 			})->via(strtoupper($route['method']))->name($route['name']);
@@ -356,6 +387,24 @@ abstract class PHaiku {
 		    }
 		}		
 		return $deflang;
+	}
+	
+	protected function getCache($routename) {
+		if($this->nocache) return;
+		$this->cachekey = str_replace("/", ".", $routename.$this->env['PATH_INFO']);
+		if($this->cache->has($this->cachekey)) {
+			$this->cached = TRUE;
+			return $this->cache->get($this->cachekey);
+		}
+		else {
+			$this->cached = false;
+			return false;
+		}
+	}
+	
+	public function setCache() {
+		if($this->nocache || $this->cached) return;
+		$this->cache->set($this->cachekey, $this->app->response->getBody(),120);
 	}
 	
 }

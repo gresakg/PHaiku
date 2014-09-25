@@ -1,10 +1,6 @@
 <?php
-//$startbench = microtime(true);
-
-//require __DIR__.'/Slim/Slim.php';
-
-//\Slim\Slim::registerAutoloader();
-
+$startbench = microtime(true);
+//apc_clear_cache();
 require_once __DIR__.'/vendor/autoload.php';
 
 // define services
@@ -44,10 +40,19 @@ $di['newdata'] = $di->factory(function () {
     return new \PHaiku\Data();
 });
 
+$di['cache'] = $di->factory(function () {
+	return new Desarrolla2\Cache\Cache(new Desarrolla2\Cache\Adapter\Apc());
+});
+
 //add custom services
 include __DIR__.'/config/services.php';
 
 // end services definition
+
+//write cache
+$di['slim']->hook('slim.after', function() use ($di) {
+	$di['haiku']->setCache();
+});
 
 // for security reasons define stricr route conditions
 \Slim\Route::setDefaultConditions($di['config']['route.conditions']);
@@ -63,5 +68,6 @@ include __DIR__.'/config/services.php';
 
 //run slim
 $di['slim']->run();
-//$endbench = microtime(true);
-//echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
+
+$endbench = microtime(true);
+echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
