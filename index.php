@@ -1,6 +1,6 @@
 <?php
 $startbench = microtime(true);
-//apc_clear_cache();
+
 require_once __DIR__.'/vendor/autoload.php';
 
 // define services
@@ -65,6 +65,11 @@ $di['slim']->hook('slim.after', function() use ($di) {
 
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);
+
+$di['slim']->get("/clearcache", function() use($di) {
+	apc_clear_cache();
+	$di['slim']->redirect("/");
+});
 
 //run slim
 $di['slim']->run();
