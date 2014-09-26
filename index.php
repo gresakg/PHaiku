@@ -49,11 +49,12 @@ include __DIR__.'/config/services.php';
 
 // end services definition
 
-//write cache
-$di['slim']->hook('slim.after', function() use ($di) {
-	$di['haiku']->setCache();
-});
-
+//write cache if cache enabled
+if($di['config']['cache']) {
+	$di['slim']->hook('slim.after', function() use ($di) {
+		$di['haiku']->setCache();
+	});
+}
 // for security reasons define stricr route conditions
 \Slim\Route::setDefaultConditions($di['config']['route.conditions']);
 
@@ -66,13 +67,16 @@ $di['slim']->hook('slim.after', function() use ($di) {
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);
 
-$di['slim']->get("/clearcache", function() use($di) {
-	apc_clear_cache();
-	$di['slim']->redirect("/");
-});
-
+if($di['config']['cache']) {
+	$di['slim']->get("/clearcache", function() use($di) {
+		apc_clear_cache();
+		$di['slim']->redirect("/");
+	});
+}
 //run slim
 $di['slim']->run();
 
-$endbench = microtime(true);
-echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
+if ($di['config']['benchmark']) {
+	$endbench = microtime(true);
+	echo "<p>Execution time: ".number_format(($endbench - $startbench), 4)."s Memory usage: ". (memory_get_peak_usage()/1000000)."MB</p>";
+}

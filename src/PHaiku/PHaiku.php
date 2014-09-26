@@ -72,6 +72,7 @@ abstract class PHaiku {
 		$this->data = $di['data'];
 		$this->cache = $di['cache'];
 		$this->di = $di;
+		$this->nocache = !$this->conf['cache'];
 		$this->setLangRoute();
 		
 	}
@@ -404,7 +405,7 @@ abstract class PHaiku {
 	
 	public function setCache() {
 		if($this->nocache || $this->cached) return;
-		$this->cache->set($this->cachekey, $this->app->response->getBody(),120);
+		$this->cache->set($this->cachekey, $this->app->response->getBody(),$this->conf['cache.time']);
 	}
 	
 }

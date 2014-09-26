@@ -2,6 +2,9 @@
 return [
 	"mode" => "developement",
 	"debug" => 'true',
+	"benchmark" => false,
+	"cache" => true,
+	"cache.time" => 300,
 	"templates.path" => "./templates/skela",
 	"class.name" => "\PHaiku\Haiku",
 	"data.store" => "./data",
