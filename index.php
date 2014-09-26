@@ -62,7 +62,7 @@ if($di['config']['cache']) {
 \PHaiku\PHaiku::$basedir = __DIR__;
 
 //define the version
-\PHaiku\PHaiku::$version = "0.80.39.14";
+\PHaiku\PHaiku::$version = "0.81.39.14";
 
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);
