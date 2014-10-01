@@ -8,8 +8,16 @@ require_once __DIR__.'/vendor/autoload.php';
 // use pimple as dependency injector
 $di = new \Pimple\Container();
 
-// load basic configurations
-$di['config'] = require __DIR__.'/config/config.php';
+$default = require __DIR__.'/src/config-dist.php';
+$config = require __DIR__.'/config/config.php';
+$routes = require __DIR__.'/config/routes.php';
+$di['config'] = array_merge(array_merge($default, $config),$routes);
+
+$di['cache'] = $di->factory(function () use ($di) {
+	$adapter = "Gresakg\Cache\Adapter\\".$di['config']['cache.adapter'];
+	$cache = new $adapter();
+	return new Gresakg\Cache\Cache($cache);
+});
 
 // load slim as main framework
 $di['slim'] = function($c) {
@@ -40,12 +48,6 @@ $di['newdata'] = $di->factory(function () {
     return new \PHaiku\Data();
 });
 
-$di['cache'] = $di->factory(function () use ($di) {
-	$adapter = "Gresakg\Cache\Adapter\\".$di['config']['cache.adapter'];
-	$cache = new $adapter();
-	return new Gresakg\Cache\Cache($cache);
-});
-
 //add custom services
 include __DIR__.'/config/services.php';
 
@@ -69,12 +71,14 @@ if($di['config']['cache']) {
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);
 
+//route for clearing the cache
 if($di['config']['cache']) {
-	$di['slim']->get("/clearcache", function() use($di) {
+	$di['slim']->get($di['config']['cache.flush.url'], function() use($di) {
 		$di['cache']->dropCache();
 		$di['slim']->redirect("/");
 	});
 }
+
 //run slim
 $di['slim']->run();
 
