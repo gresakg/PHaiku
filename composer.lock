@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0c9569ba5096139fc5d94d69dce17eaf",
+    "hash": "feb6d3de45455abe83dacc87b141e9fe",
     "packages": [
         {
-            "name": "desarrolla2/cache",
+            "name": "gresakg/cache",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/desarrolla2/Cache.git",
-                "reference": "1f48380045787851c60bc796cd46e358d3ed6821"
+                "url": "https://github.com/gresakg/Cache.git",
+                "reference": "d6a5ffbc919c4facf7aa28b396ef644ae2bce0be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/desarrolla2/Cache/zipball/1f48380045787851c60bc796cd46e358d3ed6821",
-                "reference": "1f48380045787851c60bc796cd46e358d3ed6821",
+                "url": "https://api.github.com/repos/gresakg/Cache/zipball/d6a5ffbc919c4facf7aa28b396ef644ae2bce0be",
+                "reference": "d6a5ffbc919c4facf7aa28b396ef644ae2bce0be",
                 "shasum": ""
             },
             "require": {
@@ -31,10 +31,9 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Desarrolla2\\Cache\\": "src/"
+                    "Gresakg\\Cache\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -43,10 +42,15 @@
                     "name": "Daniel González",
                     "homepage": "http://desarrolla2.com/",
                     "role": "Developer"
+                },
+                {
+                    "name": "Gregor Grešak",
+                    "homepage": "http://gresak.net/",
+                    "role": "Developer"
                 }
             ],
             "description": "Provides an cache interface for several adapters (Apc, File, Mongo, Memcached, Mysql, ... )",
-            "homepage": "https://github.com/desarrolla2/Cache/blob/master/README.md",
+            "homepage": "https://github.com/gresakg/Cache/blob/master/README.md",
             "keywords": [
                 "apc",
                 "cache",
@@ -56,7 +60,11 @@
                 "mysql",
                 "redis"
             ],
-            "time": "2014-02-24 09:30:14"
+            "support": {
+                "issues": "https://github.com/gresakg/Cache/issues",
+                "source": "https://github.com/gresakg/Cache/tree/master"
+            },
+            "time": "2014-10-01 08:05:57"
         },
         {
             "name": "pimple/pimple",
@@ -159,7 +167,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "desarrolla2/cache": 20
+        "gresakg/cache": 20
     },
     "prefer-stable": false,
     "platform": [

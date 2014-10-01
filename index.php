@@ -41,7 +41,9 @@ $di['newdata'] = $di->factory(function () {
 });
 
 $di['cache'] = $di->factory(function () {
-	return new Desarrolla2\Cache\Cache(new Desarrolla2\Cache\Adapter\Apc());
+	$cache = new Gresakg\Cache\Adapter\MemCache();
+	$cache->addServer("localhost", "11211");
+	return new Gresakg\Cache\Cache($cache);
 });
 
 //add custom services
@@ -69,7 +71,7 @@ if($di['config']['cache']) {
 
 if($di['config']['cache']) {
 	$di['slim']->get("/clearcache", function() use($di) {
-		apc_clear_cache();
+		$di['cache']->dropCache();
 		$di['slim']->redirect("/");
 	});
 }

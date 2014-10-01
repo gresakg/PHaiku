@@ -1,8 +1,14 @@
 {
-    "require": {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/gresakg/Cache"
+        }
+    ],
+	"require": {
         "slim/slim": "2.*",
 		"pimple/pimple": "3.*",
-		"desarrolla2/cache":  "dev-master"
+		"gresakg/cache":  "dev-master"
     },
     "autoload": {
         "psr-0": {
