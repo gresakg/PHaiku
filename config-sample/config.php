@@ -4,6 +4,7 @@ return [
 	"debug" => 'true',
 	"benchmark" => false,
 	"cache" => true,
+	"cache.adapter" => "File",
 	"cache.time" => 300,
 	"templates.path" => "./templates/skela",
 	"class.name" => "\PHaiku\Haiku",

@@ -40,9 +40,9 @@ $di['newdata'] = $di->factory(function () {
     return new \PHaiku\Data();
 });
 
-$di['cache'] = $di->factory(function () {
-	$cache = new Gresakg\Cache\Adapter\MemCache();
-	$cache->addServer("localhost", "11211");
+$di['cache'] = $di->factory(function () use ($di) {
+	$adapter = "Gresakg\Cache\Adapter\\".$di['config']['cache.adapter'];
+	$cache = new $adapter();
 	return new Gresakg\Cache\Cache($cache);
 });
 
@@ -64,7 +64,7 @@ if($di['config']['cache']) {
 \PHaiku\PHaiku::$basedir = __DIR__;
 
 //define the version
-\PHaiku\PHaiku::$version = "0.82.39.14";
+\PHaiku\PHaiku::$version = "0.83.40.14";
 
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);

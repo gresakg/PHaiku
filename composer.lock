@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gresakg/Cache.git",
-                "reference": "d6a5ffbc919c4facf7aa28b396ef644ae2bce0be"
+                "reference": "75f4f190ec0455af0144a9090d9f852326c06ab5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gresakg/Cache/zipball/d6a5ffbc919c4facf7aa28b396ef644ae2bce0be",
-                "reference": "d6a5ffbc919c4facf7aa28b396ef644ae2bce0be",
+                "url": "https://api.github.com/repos/gresakg/Cache/zipball/75f4f190ec0455af0144a9090d9f852326c06ab5",
+                "reference": "75f4f190ec0455af0144a9090d9f852326c06ab5",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 "issues": "https://github.com/gresakg/Cache/issues",
                 "source": "https://github.com/gresakg/Cache/tree/master"
             },
-            "time": "2014-10-01 08:05:57"
+            "time": "2014-10-01 08:59:53"
         },
         {
             "name": "pimple/pimple",
