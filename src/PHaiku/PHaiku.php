@@ -391,7 +391,7 @@ abstract class PHaiku {
 	}
 	
 	protected function getCache($routename) {
-		if($this->nocache) return;
+		if($this->nocache) return false;
 		$this->cachekey = str_replace("/", ".", $routename.$this->env['PATH_INFO']);
 		if($this->cache->has($this->cachekey)) {
 			$this->cached = TRUE;
