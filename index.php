@@ -56,7 +56,8 @@ include __DIR__.'/config/services.php';
 //write cache if cache enabled
 if($di['config']['cache']) {
 	$di['slim']->hook('slim.after', function() use ($di) {
-		$di['haiku']->setCache();
+		if($di['slim']->response->isOk())
+			$di['haiku']->setCache();
 	});
 }
 // for security reasons define stricr route conditions
@@ -66,7 +67,7 @@ if($di['config']['cache']) {
 \PHaiku\PHaiku::$basedir = __DIR__;
 
 //define the version
-\PHaiku\PHaiku::$version = "0.84.40.14";
+\PHaiku\PHaiku::$version = "0.85.40.14";
 
 //set the routes
 \PHaiku\PHaiku::setRoutes($di);
