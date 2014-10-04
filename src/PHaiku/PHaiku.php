@@ -288,6 +288,7 @@ abstract class PHaiku {
 					$html .= "</li>";
 				}
 				else {
+					if(preg_match("/^http(s)?:\/\//", $value)) $baseurl = "";
 					$html .= "<a href=\"{$baseurl}{$value}\">$key</a></li>";
 				}
 			}
